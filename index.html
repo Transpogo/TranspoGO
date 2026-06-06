@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<link rel="icon" href="transpogo-removebg-preview.png" type="image/x-icon">
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>TranspoGO | India's Enterprise Logistics Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+  
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{--or:#E85C00;--orl:#FF7A1F;--bk:#0A0A0A;--dk:#111;--cb:#161616;--br:#252525;--tx:#F0F0F0;--mu:#777;--wh:#FFF;}
+html{scroll-behavior:smooth;}
+body{background:var(--bk);color:var(--tx);font-family:'DM Sans',sans-serif;overflow-x:hidden;}
+nav{position:fixed;top:0;left:0;right:0;z-index:999;background:rgba(10,10,10,0.97);backdrop-filter:blur(16px);border-bottom:1px solid var(--br);}
+.nav-in{max-width:1300px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 28px;}
+.nav-logo img{height:42px;object-fit:contain;}
+.nav-links{display:flex;align-items:center;gap:26px;}
+.nav-links a{color:var(--mu);text-decoration:none;font-size:12px;font-weight:600;letter-spacing:.8px;transition:color .2s;text-transform:uppercase;}
+.nav-links a:hover{color:var(--wh);}
+.nav-cta{background:var(--or);color:#fff;border:none;padding:9px 22px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:13px;cursor:pointer;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);transition:background .2s;}
+.nav-cta:hover{background:var(--orl);}
+.hbg{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px;}
+.hbg span{display:block;width:24px;height:2px;background:var(--tx);}
+@media(max-width:860px){.nav-links{display:none;position:fixed;top:64px;left:0;right:0;background:var(--dk);flex-direction:column;padding:20px;gap:14px;border-bottom:1px solid var(--br);z-index:998;}.nav-links.open{display:flex;}.hbg{display:flex;}}
+/* HERO */
+.hero{position:relative;height:100vh;min-height:580px;overflow:hidden;padding-top:64px;}
+.slide{position:absolute;inset:0;opacity:0;transition:opacity 1.1s ease;display:flex;align-items:center;}
+.slide.active{opacity:1;}
+.s-bg{position:absolute;inset:0;}
+.s-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.02) 1px,transparent 1px);background-size:55px 55px;mask-image:radial-gradient(ellipse 85% 85% at 50% 50%,black 30%,transparent 100%);}
+.s-content{position:relative;z-index:2;max-width:1300px;margin:0 auto;padding:0 28px;width:100%;}
+.s-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(232,92,0,0.1);border:1px solid rgba(232,92,0,0.3);color:var(--or);padding:5px 13px;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:18px;}
+.s-badge::before{content:'';width:5px;height:5px;background:var(--or);border-radius:50%;animation:blink 1.8s infinite;}
+@keyframes blink{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.4;transform:scale(1.5);}}
+.s-content h1{font-family:'Rajdhani',sans-serif;font-size:clamp(36px,5.5vw,70px);font-weight:700;line-height:1.03;letter-spacing:-1px;color:var(--wh);max-width:680px;}
+.s-content h1 span{color:var(--or);}
+.s-content p{color:var(--mu);font-size:15px;line-height:1.8;margin:16px 0 28px;max-width:500px;}
+.hbtns{display:flex;gap:12px;flex-wrap:wrap;}
+.bp{background:var(--or);color:#fff;border:none;padding:13px 28px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:14px;cursor:pointer;clip-path:polygon(9px 0%,100% 0%,calc(100% - 9px) 100%,0% 100%);transition:all .2s;text-decoration:none;display:inline-block;}
+.bp:hover{background:var(--orl);transform:translateY(-1px);}
+.bo{background:transparent;color:var(--wh);border:1px solid var(--br);padding:12px 28px;font-family:'DM Sans',sans-serif;font-weight:500;font-size:14px;cursor:pointer;transition:all .2s;text-decoration:none;display:inline-block;}
+.bo:hover{border-color:var(--or);color:var(--or);}
+/* Truck animation */
+.truck-wrap{position:absolute;right:3%;bottom:8%;z-index:3;}
+.truck-wrap svg{width:clamp(260px,32vw,480px);}
+.t-bob{animation:bob 3s ease-in-out infinite;}
+@keyframes bob{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+.w-spin{animation:wspin 1.2s linear infinite;}
+@keyframes wspin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+/* Slide dots */
+.dots{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);display:flex;gap:9px;z-index:10;}
+.dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,0.25);cursor:pointer;transition:all .3s;}
+.dot.active{background:var(--or);width:26px;border-radius:3px;}
+/* STATS BAR */
+.sbar{background:var(--or);}
+.sbar-in{max-width:1300px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);}
+.si{padding:16px 20px;text-align:center;border-right:1px solid rgba(255,255,255,.15);}
+.si:last-child{border-right:none;}
+.sn{font-family:'Rajdhani',sans-serif;font-size:28px;font-weight:700;color:#fff;}
+.sl{font-size:10px;color:rgba(255,255,255,.72);text-transform:uppercase;letter-spacing:1.2px;}
+@media(max-width:560px){.sbar-in{grid-template-columns:1fr 1fr;}.si{border-bottom:1px solid rgba(255,255,255,.15);border-right:none;}.si:nth-child(2n){border-right:none;}}
+/* TICKER */
+.ticker{background:#0D0D0D;border-bottom:1px solid var(--br);padding:9px 0;overflow:hidden;}
+.tick-in{display:flex;gap:50px;animation:tick 28s linear infinite;white-space:nowrap;}
+.ti{font-family:'Rajdhani',sans-serif;font-weight:600;font-size:12px;color:var(--mu);letter-spacing:2px;text-transform:uppercase;display:flex;align-items:center;gap:12px;}
+.ti::before{content:'▸';color:var(--or);}
+@keyframes tick{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+/* SECTIONS */
+section{padding:72px 28px;}
+.si2{max-width:1300px;margin:0 auto;}
+.slbl{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--or);margin-bottom:9px;}
+.sh{font-family:'Rajdhani',sans-serif;font-size:clamp(24px,4vw,46px);font-weight:700;color:var(--wh);line-height:1.08;}
+.ssub{color:var(--mu);font-size:14px;line-height:1.8;max-width:540px;margin-top:9px;}
+@media(max-width:560px){section{padding:52px 18px;}}
+/* FLEET */
+.fg{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-top:40px;}
+.fc{background:var(--cb);border:1px solid var(--br);border-radius:2px;overflow:hidden;transition:all .3s;}
+.fc:hover{border-color:var(--or);transform:translateY(-4px);box-shadow:0 14px 36px rgba(232,92,0,0.1);}
+.fi{background:#181818;padding:18px;height:168px;display:flex;align-items:center;justify-content:center;position:relative;}
+.fi svg{transition:transform .4s;}
+.fc:hover .fi svg{transform:scale(1.05);}
+.cb2{position:absolute;top:9px;right:9px;background:var(--or);color:#fff;font-size:9px;font-weight:700;padding:2px 7px;letter-spacing:1px;text-transform:uppercase;}
+.fb{padding:14px 16px;}
+.fn{font-family:'Rajdhani',sans-serif;font-size:19px;font-weight:700;color:var(--wh);}
+.fm{font-size:11px;color:var(--or);text-transform:uppercase;letter-spacing:1px;margin-top:2px;}
+.fs{display:flex;flex-wrap:wrap;gap:8px;margin-top:9px;}
+.sp{font-size:12px;color:var(--mu);}
+.sp b{color:var(--tx);}
+.fhr{height:1px;background:var(--br);margin:9px 0;}
+.fu{font-size:12px;color:var(--mu);line-height:1.55;}
+/* SERVICES */
+#services{background:#0D0D0D;}
+.sc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:40px;}
+.sc{background:var(--cb);border:1px solid var(--br);border-top:3px solid var(--or);padding:24px;border-radius:2px;cursor:pointer;transition:all .3s;user-select:none;}
+.sc:hover,.sc.sel{border-color:var(--or);background:#1A1515;}
+.sc.sel{box-shadow:0 0 0 1px var(--or);}
+.sci{font-size:30px;margin-bottom:12px;}
+.scn{font-family:'Rajdhani',sans-serif;font-size:19px;font-weight:700;color:var(--wh);margin-bottom:6px;}
+.scd{font-size:13px;color:var(--mu);line-height:1.6;}
+.sch{font-size:11px;color:var(--or);margin-top:8px;font-weight:600;letter-spacing:.4px;}
+@media(max-width:860px){.sc-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:520px){.sc-grid{grid-template-columns:1fr;}}
+/* DYN FORM */
+.df{background:var(--cb);border:1px solid var(--or);border-radius:2px;margin-top:28px;overflow:hidden;display:none;}
+.df.show{display:block;}
+.dfh{background:var(--or);padding:18px 24px;display:flex;align-items:center;justify-content:space-between;}
+.dfh h3{font-family:'Rajdhani',sans-serif;font-size:19px;font-weight:700;color:#fff;letter-spacing:.4px;}
+.dfh p{font-size:12px;color:rgba(255,255,255,.68);margin-top:2px;}
+.dfc{background:none;border:none;color:#fff;font-size:20px;cursor:pointer;}
+.dfb{padding:24px;}
+.fg2{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;}
+.fg2 label{font-size:11px;font-weight:700;color:var(--mu);text-transform:uppercase;letter-spacing:1px;}
+.fg2 label .req{color:var(--or);}
+.fg2 input,.fg2 select,.fg2 textarea{background:#1A1A1A;border:1px solid var(--br);color:var(--tx);padding:10px 13px;font-family:'DM Sans',sans-serif;font-size:13px;border-radius:2px;transition:border-color .2s;width:100%;}
+.fg2 input:focus,.fg2 select:focus,.fg2 textarea:focus{outline:none;border-color:var(--or);}
+.fg2 select option{background:#1A1A1A;}
+.fg2 textarea{resize:vertical;min-height:68px;}
+.gr2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.gr3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+.ff{grid-column:1/-1;}
+.fsec{font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:700;color:var(--or);letter-spacing:2px;text-transform:uppercase;padding:10px 0 7px;border-bottom:1px solid var(--br);margin:14px 0 3px;}
+.cbg{display:flex;flex-wrap:wrap;gap:9px;margin-top:3px;}
+.cbi{display:flex;align-items:center;gap:6px;cursor:pointer;}
+.cbi input{width:14px;height:14px;accent-color:var(--or);}
+.cbi span{font-size:12px;color:var(--mu);}
+.wa-btn{background:#25D366;color:#fff;border:none;padding:14px 36px;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:16px;letter-spacing:1px;cursor:pointer;clip-path:polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%);transition:all .2s;display:flex;align-items:center;gap:9px;margin:22px auto 0;}
+.wa-btn:hover{background:#1ebe5d;transform:translateY(-2px);}
+.fnote{text-align:center;font-size:11px;color:var(--mu);margin-top:9px;}
+.fnote a{color:var(--or);text-decoration:none;}
+@media(max-width:580px){.gr2,.gr3{grid-template-columns:1fr;}.ff{grid-column:1;}.dfb{padding:16px;}}
+/* DISTRIBUTION */
+#dist{background:var(--bk);}
+.dg{display:grid;grid-template-columns:1fr 1fr;gap:52px;align-items:start;margin-top:44px;}
+.dsteps{display:flex;flex-direction:column;gap:0;}
+.ds{display:flex;gap:18px;position:relative;padding-bottom:28px;}
+.ds::before{content:'';position:absolute;left:18px;top:42px;width:2px;bottom:0;background:repeating-linear-gradient(180deg,var(--or) 0,var(--or) 5px,transparent 5px,transparent 11px);}
+.ds:last-child::before{display:none;}
+.ds:last-child{padding-bottom:0;}
+.dnum{width:38px;height:38px;border-radius:50%;background:var(--or);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:700;color:#fff;}
+.dt h3{font-family:'Rajdhani',sans-serif;font-size:18px;font-weight:700;color:var(--wh);margin-bottom:4px;}
+.dt p{font-size:13px;color:var(--mu);line-height:1.65;}
+.dvis{background:var(--cb);border:1px solid var(--br);border-radius:2px;padding:24px;}
+.dn{background:#1A1A1A;border:1px solid var(--br);border-radius:2px;padding:12px 16px;text-align:center;}
+.dn.orn{border-color:var(--or);background:rgba(232,92,0,0.07);}
+.dnt{font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:700;color:var(--wh);}
+.dns{font-size:11px;color:var(--mu);margin-top:2px;}
+.dc{display:flex;flex-direction:column;align-items:center;padding:7px 0;}
+.dcl{width:2px;height:22px;background:repeating-linear-gradient(180deg,var(--or) 0,var(--or) 4px,transparent 4px,transparent 9px);}
+.drl{font-size:9px;color:var(--or);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-top:3px;}
+.dnr{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px;width:100%;}
+@media(max-width:720px){.dg{grid-template-columns:1fr;}}
+/* COVERAGE */
+#cov{background:#0D0D0D;}
+.cg{display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:9px;margin-top:32px;}
+.cc{background:var(--cb);border:1px solid var(--br);padding:10px 13px;text-align:center;border-radius:2px;transition:all .2s;}
+.cc:hover{border-color:var(--or);}
+.ccn{font-weight:500;font-size:13px;}
+.ccs{font-size:10px;color:var(--mu);margin-top:1px;}
+.cc.hq{border-color:var(--or);background:rgba(232,92,0,0.06);}
+.cc.hq .ccn{color:var(--or);}
+/* WHY */
+#why{background:var(--bk);}
+.wg{display:grid;grid-template-columns:1fr 1fr;gap:44px;margin-top:44px;align-items:start;}
+.wlist{display:flex;flex-direction:column;gap:18px;}
+.wi{display:flex;gap:16px;background:var(--cb);border:1px solid var(--br);padding:18px;border-radius:2px;transition:border-color .3s;}
+.wi:hover{border-color:var(--or);}
+.wnum{font-family:'Rajdhani',sans-serif;font-size:38px;font-weight:700;color:rgba(232,92,0,0.18);line-height:1;min-width:42px;}
+.wt h3{font-family:'Rajdhani',sans-serif;font-size:17px;font-weight:700;color:var(--wh);margin-bottom:4px;}
+.wt p{font-size:13px;color:var(--mu);line-height:1.6;}
+.tcard{background:var(--cb);border:1px solid var(--br);border-radius:2px;padding:22px;}
+.thdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+.tid{font-size:11px;color:var(--mu);}
+.tst{font-size:11px;font-weight:700;color:#22C55E;background:rgba(34,197,94,.1);padding:3px 9px;border-radius:20px;}
+.tbar{height:4px;background:var(--br);border-radius:2px;margin:7px 0;}
+.tfill{height:4px;background:var(--or);border-radius:2px;}
+.tpts{display:flex;justify-content:space-between;margin-top:5px;}
+.tp2{font-size:10px;color:var(--mu);}
+.tp2.d{color:var(--or);}
+.tdet{background:#1A1A1A;border:1px solid var(--br);border-radius:2px;padding:12px;margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:7px;}
+.tdi .tdl{font-size:10px;color:var(--mu);}
+.tdi .tdv{font-size:12px;font-weight:500;}
+@media(max-width:720px){.wg{grid-template-columns:1fr;}}
+/* FOOTER */
+footer{background:#0D0D0D;border-top:1px solid var(--br);padding:44px 28px 20px;}
+.fin{max-width:1300px;margin:0 auto;}
+.fgrd{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:32px;}
+.flogo img{height:36px;object-fit:contain;}
+.fdesc{font-size:12px;color:var(--mu);line-height:1.75;max-width:270px;margin-top:10px;}
+.fcon{margin-top:14px;display:flex;flex-direction:column;gap:7px;}
+.fcon a{font-size:12px;color:var(--mu);text-decoration:none;transition:color .2s;}
+.fcon a:hover{color:var(--or);}
+.fhd{font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:700;color:var(--wh);letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;}
+.fls{display:flex;flex-direction:column;gap:8px;}
+.fls a{font-size:12px;color:var(--mu);text-decoration:none;transition:color .2s;}
+.fls a:hover{color:var(--or);}
+.fbot{display:flex;justify-content:space-between;align-items:center;padding-top:18px;border-top:1px solid var(--br);}
+.fcpy,.fpow{font-size:11px;color:var(--mu);}
+.fpow span{color:var(--or);}
+@media(max-width:860px){.fgrd{grid-template-columns:1fr 1fr;}}
+@media(max-width:520px){.fgrd{grid-template-columns:1fr;gap:22px;}.fbot{flex-direction:column;gap:5px;text-align:center;}}
+/* TOAST */
+.toast{position:fixed;bottom:22px;right:22px;background:#25D366;color:#fff;padding:12px 20px;border-radius:3px;font-weight:600;font-size:13px;z-index:9999;transform:translateY(100px);opacity:0;transition:all .3s;display:flex;align-items:center;gap:7px;}
+.toast.show{transform:translateY(0);opacity:1;}
+.rev{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease;}
+.rev.v{opacity:1;transform:translateY(0);}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-in">
+    <div class="nav-logo"><img id="navlogo" alt="TranspoGO"/></div>
+    <div class="nav-links" id="navLinks">
+      <a href="#fleet">Fleet</a><a href="#services">Services</a>
+      <a href="#dist">Distribution</a><a href="#cov">Coverage</a><a href="#why">Why Us</a>
+    </div>
+    <button class="nav-cta" onclick="goBook()">BOOK NOW</button>
+    <button class="hbg" onclick="document.getElementById('navLinks').classList.toggle('open')"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<!-- HERO SLIDESHOW -->
+<section class="hero">
+  <!-- Slide 1: Transport -->
+  <div class="slide active" id="sl0">
+    <div class="s-bg" style="background:radial-gradient(ellipse 65% 60% at 18% 55%,rgba(232,92,0,0.12) 0%,transparent 68%),var(--bk);"></div>
+    <div class="s-grid"></div>
+    <div class="s-content">
+      <div class="s-badge">🚛 India's #1 Enterprise Logistics Network</div>
+      <h1>Move Cargo.<br/><span>Pan-India.</span><br/>Every Day.</h1>
+      <p>Full truckload, part load, express and cold chain transport covering all 28 states. 1000+ fleet, GPS-tracked, 24/7 dispatch.</p>
+      <div class="hbtns">
+        <button class="bp" onclick="goBook()">Book a Vehicle →</button>
+        <a href="tel:+919482217205" class="bo">📞 +91 94822 17205</a>
+      </div>
+    </div>
+    <div class="truck-wrap">
+      <svg viewBox="0 0 500 240" xmlns="http://www.w3.org/2000/svg">
+        <defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#E85C00" stop-opacity="0"/><stop offset="50%" stop-color="#E85C00" stop-opacity="0.3"/><stop offset="100%" stop-color="#E85C00" stop-opacity="0"/></linearGradient></defs>
+        <rect x="0" y="198" width="500" height="42" fill="#0E0E0E"/>
+        <rect x="0" y="196" width="500" height="3" fill="url(#rg)"/>
+        <rect x="30" y="208" width="44" height="3" fill="#E85C00" opacity="0.22"/>
+        <rect x="130" y="208" width="44" height="3" fill="#E85C00" opacity="0.22"/>
+        <rect x="230" y="208" width="44" height="3" fill="#E85C00" opacity="0.22"/>
+        <rect x="330" y="208" width="44" height="3" fill="#E85C00" opacity="0.22"/>
+        <line x1="0" y1="160" x2="42" y2="160" stroke="#E85C00" stroke-width="2" opacity="0.45"/>
+        <line x1="0" y1="170" x2="34" y2="170" stroke="#E85C00" stroke-width="1.5" opacity="0.3"/>
+        <line x1="0" y1="179" x2="26" y2="179" stroke="#E85C00" stroke-width="1" opacity="0.18"/>
+        <g class="t-bob">
+          <path d="M44,138 Q48,118 82,118 L104,118 L104,198 L44,198 Z" fill="#222"/>
+          <path d="M47,139 Q51,122 80,122 L101,122 L101,154 L47,154 Z" fill="#0A1825" opacity="0.88"/>
+          <rect x="47" y="162" width="40" height="24" rx="2" fill="#0A1825" opacity="0.55"/>
+          <rect x="38" y="140" width="8" height="18" rx="1" fill="#FFD700" opacity="0.55"/>
+          <rect x="104" y="110" width="286" height="88" rx="2" fill="#1C1C1C" stroke="#E85C00" stroke-width="1.5"/>
+          <rect x="106" y="112" width="282" height="84" fill="#141414"/>
+          <rect x="104" y="110" width="286" height="7" fill="#E85C00"/>
+          <rect x="104" y="191" width="286" height="7" fill="#E85C00"/>
+          <line x1="247" y1="112" x2="247" y2="198" stroke="#222" stroke-width="1.5"/>
+          <text x="175" y="158" text-anchor="middle" font-family="Arial Black,sans-serif" font-size="17" font-weight="900" fill="#E85C00" letter-spacing="2" opacity="0.92">TRANSPOGO</text>
+          <text x="320" y="158" text-anchor="middle" font-family="Arial Black,sans-serif" font-size="17" font-weight="900" fill="#E85C00" letter-spacing="2" opacity="0.92">LOGISTICS</text>
+          <text x="247" y="174" text-anchor="middle" font-family="Arial,sans-serif" font-size="8" fill="#3A3A3A" letter-spacing="5">PAN-INDIA · 1000+ FLEET</text>
+          <g class="w-spin" style="transform-origin:80px 208px"><circle cx="80" cy="208" r="18" fill="#111" stroke="#333" stroke-width="2"/><circle cx="80" cy="208" r="10" fill="#202020" stroke="#E85C00" stroke-width="1.8"/><circle cx="80" cy="208" r="3.5" fill="#E85C00"/><line x1="80" y1="198" x2="80" y2="218" stroke="#E85C00" stroke-width="0.8" opacity="0.4"/><line x1="70" y1="208" x2="90" y2="208" stroke="#E85C00" stroke-width="0.8" opacity="0.4"/></g>
+          <g class="w-spin" style="transform-origin:200px 208px"><circle cx="200" cy="208" r="18" fill="#111" stroke="#333" stroke-width="2"/><circle cx="200" cy="208" r="10" fill="#202020" stroke="#E85C00" stroke-width="1.8"/><circle cx="200" cy="208" r="3.5" fill="#E85C00"/></g>
+          <g class="w-spin" style="transform-origin:340px 208px"><circle cx="340" cy="208" r="18" fill="#111" stroke="#333" stroke-width="2"/><circle cx="340" cy="208" r="10" fill="#202020" stroke="#E85C00" stroke-width="1.8"/><circle cx="340" cy="208" r="3.5" fill="#E85C00"/></g>
+          <g class="w-spin" style="transform-origin:374px 208px"><circle cx="374" cy="208" r="18" fill="#111" stroke="#333" stroke-width="2"/><circle cx="374" cy="208" r="10" fill="#202020" stroke="#E85C00" stroke-width="1.8"/><circle cx="374" cy="208" r="3.5" fill="#E85C00"/></g>
+        </g>
+      </svg>
+    </div>
+  </div>
+  <!-- Slide 2: Warehousing -->
+  <div class="slide" id="sl1">
+    <div class="s-bg" style="background:radial-gradient(ellipse 65% 60% at 50% 40%,rgba(15,110,86,0.13) 0%,transparent 68%),var(--bk);"></div>
+    <div class="s-grid"></div>
+    <div class="s-content">
+      <div class="s-badge" style="color:#1D9E75;border-color:rgba(29,158,117,0.35);background:rgba(29,158,117,0.08);">🏭 Smart Warehousing Solutions</div>
+      <h1>Store Smarter.<br/><span style="color:#1D9E75;">Ship Faster.</span><br/>Scale Bigger.</h1>
+      <p>Strategic warehouse hubs across India. Inventory management, pick-pack-dispatch, and cross-docking built for growing businesses.</p>
+      <div class="hbtns">
+        <button class="bp" style="background:#0F6E56;" onclick="selectService('warehousing')">Enquire for Storage →</button>
+        <a href="tel:+919482217205" class="bo">📞 Call Now</a>
+      </div>
+    </div>
+  </div>
+  <!-- Slide 3: Distribution -->
+  <div class="slide" id="sl2">
+    <div class="s-bg" style="background:radial-gradient(ellipse 65% 60% at 28% 50%,rgba(83,74,183,0.12) 0%,transparent 68%),var(--bk);"></div>
+    <div class="s-grid"></div>
+    <div class="s-content">
+      <div class="s-badge" style="color:#8B83E8;border-color:rgba(139,131,232,0.35);background:rgba(139,131,232,0.08);">🔗 Manufacturer–Distributor Connect</div>
+      <h1>Connect.<br/><span style="color:#8B83E8;">Grow.</span><br/>Distribute.</h1>
+      <p>TranspoGO bridges manufacturers with verified distributors across all 28 states — building supply chains that reach every district and retailer.</p>
+      <div class="hbtns">
+        <button class="bp" style="background:#534AB7;" onclick="selectService('distribution')">Join Our Network →</button>
+        <a href="tel:+919482217205" class="bo">📞 Speak to Us</a>
+      </div>
+    </div>
+  </div>
+  <!-- Slide 4: 1000+ Fleet -->
+  <div class="slide" id="sl3">
+    <div class="s-bg" style="background:radial-gradient(ellipse 65% 60% at 78% 50%,rgba(232,92,0,0.13) 0%,transparent 68%),var(--bk);"></div>
+    <div class="s-grid"></div>
+    <div class="s-content">
+      <div class="s-badge">🚛 1000+ Strong Fleet</div>
+      <h1><span>1000+</span> Vehicles.<br/>Every Route.<br/>Every Load.</h1>
+      <p>From 600 kg Mahindra Jeeto to 35-ton Ashok Leyland AVTR trailers — India's most complete logistics fleet, available 24/7 nationwide.</p>
+      <div class="hbtns">
+        <button class="bp" onclick="document.getElementById('fleet').scrollIntoView({behavior:'smooth'})">View Full Fleet →</button>
+        <button class="bp" style="background:transparent;border:1px solid var(--or);clip-path:none;" onclick="goBook()">Get Quote</button>
+      </div>
+    </div>
+  </div>
+  <div class="dots" id="dots">
+    <div class="dot active" onclick="goSlide(0)"></div>
+    <div class="dot" onclick="goSlide(1)"></div>
+    <div class="dot" onclick="goSlide(2)"></div>
+    <div class="dot" onclick="goSlide(3)"></div>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<div class="sbar">
+  <div class="sbar-in">
+    <div class="si"><div class="sn">1000+</div><div class="sl">Fleet Size</div></div>
+    <div class="si"><div class="sn">28</div><div class="sl">States Covered</div></div>
+    <div class="si"><div class="sn">24/7</div><div class="sl">Operations</div></div>
+    <div class="si"><div class="sn">5000+</div><div class="sl">Happy Clients</div></div>
+  </div>
+</div>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="tick-in">
+    <span class="ti">Pan-India Transport</span><span class="ti">Cold Chain Logistics</span><span class="ti">Warehousing & Storage</span><span class="ti">Manufacturer–Distributor Connect</span><span class="ti">GPS Tracked Fleet</span><span class="ti">FTL &amp; LTL Loads</span><span class="ti">Labour &amp; Handling</span><span class="ti">E-Way Bill Support</span>
+    <span class="ti">Pan-India Transport</span><span class="ti">Cold Chain Logistics</span><span class="ti">Warehousing & Storage</span><span class="ti">Manufacturer–Distributor Connect</span><span class="ti">GPS Tracked Fleet</span><span class="ti">FTL &amp; LTL Loads</span><span class="ti">Labour &amp; Handling</span><span class="ti">E-Way Bill Support</span>
+  </div>
+</div>
+
+<!-- FLEET SECTION -->
+<section id="fleet">
+  <div class="si2">
+    <div class="rev">
+      <p class="slbl">Our Fleet</p>
+      <h2 class="sh">Right Vehicle for Every Load</h2>
+      <p class="ssub">Every vehicle below is matched to real Indian truck brands, accurate body sizes, payloads, and axle configurations from our fleet guide.</p>
+    </div>
+    <div class="fg rev">
+
+      <!-- Tata Ace Gold -->
+      <div class="fc">
+        <div class="fi"><span class="cb2">750 KG</span>
+          <svg viewBox="0 0 210 95" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-height:120px">
+            <rect x="60" y="22" width="128" height="52" rx="2" fill="#E85C00"/>
+            <rect x="62" y="24" width="124" height="48" rx="1" fill="#141414" stroke="#E85C00" stroke-width="0.5"/>
+            <text x="124" y="52" text-anchor="middle" font-family="Arial Black" font-size="7.5" fill="#E85C00" letter-spacing="1">TATA ACE GOLD</text>
+            <text x="124" y="62" text-anchor="middle" font-family="Arial" font-size="6" fill="#444">7-8 FT · 750 KG · 4 WHEELS</text>
+            <path d="M14,36 Q17,22 50,22 L60,22 L60,74 L14,74 Z" fill="#E85C00"/>
+            <path d="M16,37 Q20,25 48,25 L58,25 L58,46 L16,46 Z" fill="#0A1825" opacity="0.9"/>
+            <rect x="10" y="38" width="6" height="12" rx="1" fill="#FFD700" opacity="0.6"/>
+            <g class="w-spin" style="transform-origin:32px 82px"><circle cx="32" cy="82" r="13" fill="#111" stroke="#3A3A3A" stroke-width="1.5"/><circle cx="32" cy="82" r="7" fill="#222" stroke="#E85C00" stroke-width="1.5"/><circle cx="32" cy="82" r="3" fill="#E85C00"/></g>
+            <g class="w-spin" style="transform-origin:140px 82px"><circle cx="140" cy="82" r="13" fill="#111" stroke="#3A3A3A" stroke-width="1.5"/><circle cx="140" cy="82" r="7" fill="#222" stroke="#E85C00" stroke-width="1.5"/><circle cx="140" cy="82" r="3" fill="#E85C00"/></g>
+            <line x1="0" y1="95" x2="200" y2="95" stroke="#222" stroke-width="1"/>
+          </svg>
+        </div>
+        <div class="fb"><div class="fn">Tata Ace Gold</div><div class="fm">Mini Truck · Chota Hathi · 4-Wheeler</div>
+          <div class="fs"><span class="sp">📦 <b>750 kg</b></span><span class="sp">📐 <b>7–8 ft</b></span><span class="sp">🔩 <b>4 wheels</b></span></div>
+          <div class="fhr"></div><div class="fu">Last-mile city deliveries, narrow-lane retail, courier runs. Best urban mini truck in India.</div>
+        </div>
+      </div>
+
+      <!-- Mahindra Jeeto -->
+      <div class="fc">
+        <div class="fi"><span class="cb2">600 KG</span>
+          <svg viewBox="0 0 200 95" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-height:120px">
+            <rect x="56" y="24" width="122" height="50" rx="2" fill="#C44A00"/>
+            <rect x="58" y="26" width="118" height="46" rx="1" fill="#141414" stroke="#C44A00" stroke-width="0.5"/>
+            <text x="117" y="53" text-anchor="middle" font-family="Arial Black" font-size="7.5" fill="#E85C00" letter-spacing="1">MAHINDRA JEETO</text>
+            <text x="117" y="63" text-anchor="middle" font-family="Arial" font-size="6" fill="#444">6-7 FT · 600 KG · 4 WHEELS</text>
+            <path d="M13,38 Q16,24 46,24 L56,24 L56,74 L13,74 Z" fill="#C44A00"/>
+            <path d="M15,39 Q18,27 44,27 L54,27 L54,48 L15,48 Z" fill="#0A1825" opacity="0.9"/>
+            <rect x="9" y="40" width="6" height="11" rx="1" fill="#FFD700" opacity="0.55"/>
+            <g class="w-spin" style="transform-origin:30px 82px"><circle cx="30" cy="82" r="12" fill="#111" stroke="#3A3A3A" stroke-width="1.5"/><circle cx="30" cy="82" r="6" fill="#222" stroke="#E85C00" stroke-width="1.5"/><circle cx="30" cy="82" r="2.5" fill="#E85C00"/></g>
+            <g class="w-spin" style="transform-origin:132px 82px"><circle cx="132" cy="82" r="12" fill="#111" stroke="#3A3A3A" stroke-width="1.5"/><circle cx="132" cy="82" r="6" fill="#222" stroke="#E85C00" stroke-width="1.5"/><circle cx="132" cy="82" r="2.5" fill="#E85C00"/></g>
+            <line x1="0" y1="95" x2="190" y2="95" stroke="#222" stroke-width="1"/>
+          </svg>
+        </div>
+        <div class="fb"><div class="fn">Mahindra Jeeto</div><div class="fm">Mini Truck · City Goods · 4-Wheeler</div>
+          <div class="fs"><span class="sp">📦 <b>600 kg</b></span><span class="sp">📐 <b>6–7 ft</b></span><span class="sp">🔩 <b>4 wheels</b></span></div>
+          <div class="fhr"></div><div class="fu">City goods, local vegetable & FMCG. Ideal for congested urban areas and last-mile delivery.</div>
+        </div>
+      </div>
+
+      <!-- Tata 407 / 14ft -->
+      <div class="fc">
+        <div class="fi"><span class="cb2">3 TON</span>
+          <svg viewBox="0 0 240 95" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-height:120px">
+            <rect x="70" y="18" width="152" height="58" rx="2" fill="#E85C00"/>
+            <rect x="72" y="20" width="148" height="54" rx="1" fill="#141414" stroke="#E85C00" stroke-width="0.5"/>
+            <text x="146" y="49" text-anchor="middle" font-family="Arial Black" font-size="7.5" fill="#E85C00" letter-spacing="1">TATA 407</text>
+            <text x="146" y="60" text-anchor="middle" font-family="Arial" font-size="6" fill="#444">14 FT · 2.5-3 TON · 4 WHEELS</text>
+            <path d="M13,34 Q17,18 58,18 L70,18 L70,76 L13,76 Z" fill="#E85C00"/>
+            <path d="M15,35 Q19,21 56,21 L68,21 L68,50 L15,50 Z" fill="#0A1825" opacity="0.9"/>
+            <rect x="13" y="57" width="36" height="16" rx="2" fill="#0A1825" opacity="0.5"/>
+            <rect x="9" y="36" width="7" height="16" rx="1" fill="#FFD700" opacity="0.6"/>
+            <g class="w-spin" style="transform-origin:36px 83px"><circle cx="36" cy="83" r="14" fill="#111" stroke="#3A3A3A" stroke-width="1.5"/><circle cx="36" cy="83" r="8" fill="#222" stroke="#E85C00" stroke-width="1.8"/><circle cx="36" cy="83" r="3.2" fill="#E85C00"/></g>
+            <g class="w-spin" style="transform-origin:160px 83px"><circle cx="160" cy="83" r="14" fill="#111" stroke="#3A3A3A" stroke-width="1.5"/><circle cx="160" cy="83" r="8" fill="#222" stroke="#E85C00" stroke-width="1.8"/><circle cx="160" cy="83" r="3.2" fill="#E85C00"/></g>
+            <line x1="0" y1="95" x2="228" y2="95" stroke="#222" stroke-width="1"/>
+          </svg>
+        </div>
+        <div class="fb"><div class="fn">Tata 407 / 14ft</div><div class="fm">LCV · Light Commercial · 4-Wheeler</div>
+          <div class="fs"><span class="sp">📦 <b>2.5–3 ton</b></span><span class="sp">📐 <b>14 ft</b></span><span class="sp">🔩 <b>4 wheels</b></span></div>
+          <div class="fhr"></div><div class="fu">Intercity FMCG, pharma, house shifting. Most common truck on Porter & BlackBuck. 4-tyre.</div>
+        </div>
+      </div>
+
+      <!-- Eicher Pro 2095XP 17ft -->
+      <div class="fc">
+        <div class="fi"><span class="cb2">7 TON</span>
+          <svg viewBox="0 0 258 95" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-height:120px">
+            <rect x="74" y="16" width="166" height="60" rx="2" fill="#E85C00"/>
+            <rect x="76" y="18" width="162" height="56" rx="1" fill="#141414" stroke="#E85C00" stroke-width="0.5"/>
+            <text x="157" y="47" text-anchor="middle" font-family="Arial Black" font-size="7" fill="#E85C00" letter-spacing="1">EICHER PRO 2095XP</text>
+            <text x="157" y="58" text-anchor="middle" font-family="Arial" font-size="6" fill="#444">17 FT · 6-7 TON · 6 WHEELS</text>
+            <path d="M12,32 Q16,16 60,16 L74,16 L74,76 L12,76 Z" fill="#E85C00"/>
+            <path d="M14,33 Q18,19 58,19 L72,19 L72,50 L14,50 Z" fill="#0A1825" opacity="0.9"/>
+            <rect x="14" y="58" width="40" height="14" rx="2" fill="#0A1825" opacity="0.5"/>
+            <rect x="8" y="34" width="7" height="18" rx="1" fill="#FFD700" opacity="0.6"/>
+            <g class="w-spin" style="transform-origin:36px 83px"><circle cx="36" cy="83" r="14" fill="#111" stroke="#3A3A3A" stroke-width="1.5"/><circle cx="36" cy="83" r="8" fill="#222" stroke="#E85C00" stroke-width="1.8"/><circle cx="36" cy="83" r="3.2" fill="#E85C00"/></g>
+            <g class="w-spin" style="transform-origin:168px 83px"><circle cx="168" cy="83" r="14" fill="#111" stroke="#3A3A3A" stroke-width="1.5"/><circle cx="168" cy="83" r="8" fill="#222" stroke="#E85C00" stroke-width="1.8"/><circle cx="168" cy="83" r="3.2" fill="#E85C00"/></g>
+            <g class="w-spin" style="transform-origin:202px 83px"><circle cx="202" cy="83" r="14" fill="#111" stroke="#3A3A3A" stroke-width="1.5"/><circle cx="202" cy="83" r="8" fill="#222" stroke="#E85C00" stroke-width="1.8"/><circle cx="202" cy="83" r="3.2" fill="#E85C00"/></g>
+            <line x1="0" y1="95" x2="246" y2="95" stroke="#222" stroke-width="1"/>
+          </svg>
+        </div>
+        <div class="fb"><div class="fn">Eicher Pro 17ft</div><div class="fm">Medium Truck · 6-Wheeler</div>
+          <div class="fs"><span class="sp">📦 <b>6–7 ton</b></span><span class="sp">📐 <b>17 ft</b></span><span class="sp">🔩 <b>6 wheels</b></span></div>
+          <div class="fhr"></div><div class="fu">Furniture, industrial goods, textiles. Regional intercity freight and medium-haul routes.</div>
+        </div>
+      </div>
+
+      <!-- Tata 1109 / 19ft -->
+      <div class="fc">
+        <div class="fi"><span class="cb2">9 TON</span>
+          <svg viewBox="0 0 272 95" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-height:120px">
+            <rect x="78" y="14" width="178" height="62" rx="2" fill="#E85C00"/>
+            <rect x="80" y="16" width="174" height="58" rx="1" fill="#141414" stroke="#E85C00" stroke-width="0.5"/>
+            <text x="167" y="46" text-anchor="middle" font-family="Arial Black" font-size="7" fill="#E85C00" letter-spacing="1">TATA 1109 / 19FT</text>
+            <text x="167" y="57" text-anchor="middle" font-family="Arial" font-size="6" fill="#444">19 FT · 7-9 TON · 6 WHEELS</text>
+            <path d="M11,30 Q15,14 62,14 L78,14 L78,76 L11,76 Z" fill="#E85C00"/>
+            <path d="M13,31 Q17,17 60,17 L76,17 L76,50 L13,50 Z" fill="#0A1825" opacity="0.9"/>
+            <rect x="13" y="58" width="44" height="14" rx="2" fill="#0A1825" opacity="0.5"/>
+            <rect x="7" y="32" width="7" height="20" rx="1" fill="#FFD700" opacity="0.6"/>
+            <g class="w-spin" style="transform-origin:36px 83px"><circle cx="36" cy="83" r="14" fill="#111" stroke="#3A3A3A" stroke-width="1.5"/><circle cx="36" cy="83" r="8" fill="#222" stroke="#E85C00" stroke-width="1.8"/><circle cx="36" cy="83" r="3.2" fill="#E85C00"/></g>
+            <g class="w-spin" style="transform-origin:176px 83px"><circle cx="176" cy="83" r="14" fill="#111" stroke="#3A3A3A" stroke-width="1.5"/><circle cx="176" cy="83" r="8" fill="#222" stroke="#E85C00" stroke-width="1.8"/><circle cx="176" cy="83" r="3.2" fill="#E85C00"/></g>
+            <g class="w-spin" style="transform-origin:211px 83px"><circle cx="211" cy="83" r="14" fill="#111" stroke="#3A3A3A" stroke-width="1.5"/><circle cx="211" cy="83" r="8" fill="#222" stroke="#E85C00" stroke-width="1.8"/><circle cx="211" cy="83" r="3.2" fill="#E85C00"/></g>
+            <line x1="0" y1="95" x2="260" y2="95" stroke="#222" stroke-width="1"/>
+          </svg>
+        </div>
+        <div class="fb"><div class="fn">Tata 1109 / 19ft</div><div class="fm">Truck · Long-Distance · 6-Wheeler</div>
+          <div class="fs"><span class="sp">📦 <b>7–9 ton</b></span><span class="sp">📐 <b>19 ft</b></span><span class="sp">🔩 <b>6 wheels</b></span></div>
+          <div class="fhr"></div><div class="fu">Long-distance cargo, industrial transport, inter-state freight. Reliable medium-heavy hauler.</div>
+        </div>
+      </div>
+
+      <!-- Tata Signa 22-24ft -->
+      <div class="fc">
+        <div class="fi"><span class="cb2">16 TON</span>
+          <svg viewBox="0 0 290 95" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-height:120px">
+            <rect x="82" y="12" width="194" height="64" rx="2" fill="#E85C00"/>
+            <rect x="84" y="14" width="190" height="60" rx="1" fill="#141414" stroke="#E85C00" stroke-width="0.5"/>
+            <line x1="179" y1="14" x2="179" y2="74" stroke="#222" stroke-width="1.5"/>
+            <text x="131" y="44" text-anchor="middle" font-family="Arial Black" font-size="6.5" fill="#E85C00" letter-spacing="1">TATA SIGNA</text>
+            <text x="131" y="55" text-anchor="middle" font-family="Arial" font-size="6" fill="#444">22-24FT · 14-16T · 10W</text>
+            <text x="227" y="44" text-anchor="middle" font-family="Arial Black" font-size="6.5" fill="#E85C00" letter-spacing="1">TRANSPOGO</text>
+            <path d="M10,28 Q14,12 64,12 L82,12 L82,76 L10,76 Z" fill="#E85C00"/>
+            <path d="M12,29 Q16,15 62,15 L80,15 L80,49 L12,49 Z" fill="#0A1825" opacity="0.9"/>
+            <rect x="12" y="58" width="48" height="14" rx="2" fill="#0A1825" opacity="0.5"/>
+            <rect x="6" y="30" width="7" height="22" rx="1" fill="#FFD700" opacity="0.6"/>
+            <g class="w-spin" style="transform-origin:34px 83px"><circle cx="34" cy="83" r="14" fill="#111" stroke="#3A3A3A" stroke-width="1.5"/><circle cx="34" cy="83" r="8" fill="#222" stroke="#E85C00" stroke-width="1.8"/><circle cx="34" cy="83" r="3.2" fill="#E85C00"/></g>
+            <g class="w-spin" style="transform-origin:182px 83px"><circle cx="182" cy="83" r="14" fill="#111" stroke="#3A3A3A" stroke-width="1.5"/><circle cx="182" cy="83" r="8" fill="#222" stroke="#E85C00" stroke-width="1.8"/><circle cx="182" cy="83" r="3.2" fill="#E85C00"/></g>
+            <g class="w-spin" style="transform-origin:214px 83px"><circle cx="214" cy="83" r="14" fill="#111" stroke="#3A3A3A" stroke-width="1.5"/><circle cx="214" cy="83" r="8" fill="#222" stroke="#E85C00" stroke-width="1.8"/><circle cx="214" cy="83" r="3.2" fill="#E85C00"/></g>
+            <g class="w-spin" style="transform-origin:256px 83px"><circle cx="256" cy="83" r="14" fill="#111" stroke="#3A3A3A" stroke-width="1.5"/><circle cx="256" cy="83" r="8" fill="#222" stroke="#E85C00" stroke-width="1.8"/><circle cx="256" cy="83" r="3.2" fill="#E85C00"/></g>
+            <g class="w-spin" style="transform-origin:279px 83px"><circle cx="279" cy="83" r="12" fill="#111" stroke="#3A3A3A" stroke-width="1.5"/><circle cx="279" cy="83" r="7" fill="#222" stroke="#E85C00" stroke-width="1.5"/><circle cx="279" cy="83" r="2.8" fill="#E85C00"/></g>
+            <line x1="0" y1="95" x2="278" y2="95" stroke="#222" stroke-width="1"/>
+          </svg>
+        </div>
+        <div class="fb"><div class="fn">Tata Signa 22–24ft</div><div class="fm">Container Truck · 10-Wheeler</div>
+          <div class="fs"><span class="sp">📦 <b>14–16 ton</b></span><span class="sp">📐 <b>22–24 ft</b></span><span class="sp">🔩 <b>10 wheels</b></span></div>
+          <div class="fhr"></div><div class="fu">Large cargo, bulk FMCG, pan-India container loads. Standard heavy container truck.</div>
+        </div>
+      </div>
+
+      <!-- Tata 3118 32ft -->
+      <div class="fc">
+        <div class="fi"><span class="cb2">14 TON</span>
+          <svg viewBox="0 0 308 95" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-height:120px">
+            <rect x="84" y="10" width="210" height="66" rx="2" fill="#E85C00"/>
+            <rect x="86" y="12" width="206" height="62" rx="1" fill="#141414" stroke="#E85C00" stroke-width="0.5"/>
+            <line x1="189" y1="12" x2="189" y2="74" stroke="#222" stroke-width="1.5"/>
+            <text x="137" y="42" text-anchor="middle" font-family="Arial Black" font-size="6.5" fill="#E85C00" letter-spacing="1">TATA 3118</text>
+            <text x="137" y="53" text-anchor="middle" font-family="Arial" font-size="6" fill="#444">32FT · 7-14T · SXL/MXL</text>
+            <text x="241" y="42" text-anchor="middle" font-family="Arial Black" font-size="6.5" fill="#E85C00" letter-spacing="1">TRANSPOGO</text>
+            <path d="M9,26 Q13,10 64,10 L84,10 L84,76 L9,76 Z" fill="#E85C00"/>
+            <path d="M11,27 Q15,13 62,13 L82,13 L82,48 L11,48 Z" fill="#0A1825" opacity="0.9"/>
+            <rect x="11" y="58" width="52" height="14" rx="2" fill="#0A1825" opacity="0.5"/>
+            <rect x="5" y="28" width="7" height="24" rx="1" fill="#FFD700" opacity="0.6"/>
+            <g class="w-spin" style="transform-origin:34px 83px"><circle cx="34" cy="83" r="13" fill="#111" stroke="#3A3A3A" stroke-width="1.5"/><circle cx="34" cy="83" r="7" fill="#222" stroke="#E85C00" stroke-width="1.5"/><circle cx="34" cy="83" r="3" fill="#E85C00"/></g>
+            <g class="w-spin" style="transform-origin:183px 83px"><circle cx="183" cy="83" r="13" fill="#111" stroke="#3A3A3A" stroke-width="1.5"/><circle cx="183" cy="83" r="7" fill="#222" stroke="#E85C00" stroke-width="1.5"/><circle cx="183" cy="83" r="3" fill="#E85C00"/></g>
+            <g class="w-spin" style="transform-origin:215px 83px"><circle cx="215" cy="83" r="13" fill="#111" stroke="#3A3A3A" stroke-width="1.5"/><circle cx="215" cy="83" r="7" fill="#222" stroke="#E85C00" stroke-width="1.5"/><circle cx="215" cy="83" r="3" fill="#E85C00"/></g>
+            <g class="w-spin" style="transform-origin:262px 83px"><circle cx="262" cy="83" r="13" fill="#111" stroke="#3A3A3A" stroke-width="1.5"/><circle cx="262" cy="83" r="7" fill="#222" stroke="#E85C00" stroke-width="1.5"/><circle cx="262" cy="83" r="3" fill="#E85C00"/></g>
+            <g class="w-spin" style="transform-origin:293px 83px"><circle cx="293" cy="83" r="13" fill="#111" stroke="#3A3A3A" stroke-width="1.5"/><circle cx="293" cy="83" r="7" fill="#222" stroke="#E85C00" stroke-width="1.5"/><circle cx="293" cy="83" r="3" fill="#E85C00"/></g>
+            <line x1="0" y1="95" x2="298" y2="95" stroke="#222" stroke-width="1"/>
+          </svg>
+        </div>
+        <div class="fb"><div class="fn">Tata 3118 / 32ft</div><div class="fm">SXL/MXL Container · 10–12 Wheeler</div>
+          <div class="fs"><span class="sp">📦 <b>7–14 ton</b></span><span class="sp">📐 <b>32 ft</b></span><span class="sp">🔩 <b>10–12 wheels</b></span></div>
+          <div class="fhr"></div><div class="fu">Long-route freight, BlackBuck/Delhivery standard. FTL container across India.</div>
+        </div>
+      </div>
+
+      <!-- Ashok Leyland AVTR Trailer -->
+      <div class="fc">
+        <div class="fi"><span class="cb2">35 TON</span>
+          <svg viewBox="0 0 322 95" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-height:120px">
+            <path d="M8,24 Q12,8 62,8 L82,8 L82,76 L8,76 Z" fill="#E85C00"/>
+            <path d="M10,25 Q14,11 60,11 L80,11 L80,47 L10,47 Z" fill="#0A1825" opacity="0.9"/>
+            <rect x="10" y="57" width="54" height="14" rx="2" fill="#0A1825" opacity="0.5"/>
+            <rect x="4" y="26" width="7" height="26" rx="1" fill="#FFD700" opacity="0.6"/>
+            <rect x="84" y="8" width="226" height="68" rx="2" fill="#E85C00"/>
+            <rect x="86" y="10" width="222" height="64" rx="1" fill="#141414" stroke="#E85C00" stroke-width="0.5"/>
+            <line x1="197" y1="10" x2="197" y2="74" stroke="#222" stroke-width="1.5"/>
+            <text x="141" y="40" text-anchor="middle" font-family="Arial Black" font-size="6.5" fill="#E85C00" letter-spacing="1">ASHOK LEYLAND AVTR</text>
+            <text x="141" y="51" text-anchor="middle" font-family="Arial" font-size="6" fill="#444">40FT · 25-35 TON · TRAILER</text>
+            <text x="253" y="40" text-anchor="middle" font-family="Arial Black" font-size="6.5" fill="#E85C00" letter-spacing="1">TRANSPOGO</text>
+            <g class="w-spin" style="transform-origin:34px 83px"><circle cx="34" cy="83" r="13" fill="#111" stroke="#3A3A3A" stroke-width="1.5"/><circle cx="34" cy="83" r="7" fill="#222" stroke="#E85C00" stroke-width="1.5"/><circle cx="34" cy="83" r="3" fill="#E85C00"/></g>
+            <g class="w-spin" style="transform-origin:62px 83px"><circle cx="62" cy="83" r="11" fill="#111" stroke="#3A3A3A" stroke-width="1.5"/><circle cx="62" cy="83" r="6" fill="#222" stroke="#E85C00" stroke-width="1.5"/><circle cx="62" cy="83" r="2.5" fill="#E85C00"/></g>
+            <g class="w-spin" style="transform-origin:189px 83px"><circle cx="189" cy="83" r="13" fill="#111" stroke="#3A3A3A" stroke-width="1.5"/><circle cx="189" cy="83" r="7" fill="#222" stroke="#E85C00" stroke-width="1.5"/><circle cx="189" cy="83" r="3" fill="#E85C00"/></g>
+            <g class="w-spin" style="transform-origin:218px 83px"><circle cx="218" cy="83" r="13" fill="#111" stroke="#3A3A3A" stroke-width="1.5"/><circle cx="218" cy="83" r="7" fill="#222" stroke="#E85C00" stroke-width="1.5"/><circle cx="218" cy="83" r="3" fill="#E85C00"/></g>
+            <g class="w-spin" style="transform-origin:268px 83px"><circle cx="268" cy="83" r="13" fill="#111" stroke="#3A3A3A" stroke-width="1.5"/><circle cx="268" cy="83" r="7" fill="#222" stroke="#E85C00" stroke-width="1.5"/><circle cx="268" cy="83" r="3" fill="#E85C00"/></g>
+            <g class="w-spin" style="transform-origin:296px 83px"><circle cx="296" cy="83" r="13" fill="#111" stroke="#3A3A3A" stroke-width="1.5"/><circle cx="296" cy="83" r="7" fill="#222" stroke="#E85C00" stroke-width="1.5"/><circle cx="296" cy="83" r="3" fill="#E85C00"/></g>
+            <line x1="0" y1="95" x2="312" y2="95" stroke="#222" stroke-width="1"/>
+          </svg>
+        </div>
+        <div class="fb"><div class="fn">Ashok Leyland AVTR</div><div class="fm">40ft Trailer · 18-Wheeler · Heavy Haul</div>
+          <div class="fs"><span class="sp">📦 <b>25–35 ton</b></span><span class="sp">📐 <b>40 ft</b></span><span class="sp">🔩 <b>18 wheels</b></span></div>
+          <div class="fhr"></div><div class="fu">Machinery, steel coils, ODC industrial loads. Heaviest haul across pan-India routes.</div>
+        </div>
+      </div>
+
+      <!-- Refrigerated -->
+      <div class="fc">
+        <div class="fi" style="background:linear-gradient(135deg,#081610,#161616);">
+          <span class="cb2" style="background:#0F6E56;">COLD CHAIN</span>
+          <svg viewBox="0 0 265 95" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-height:120px">
+            <rect x="76" y="16" width="172" height="60" rx="2" fill="#0F6E56"/>
+            <rect x="78" y="18" width="168" height="56" rx="1" fill="#060F0B" stroke="#1D9E75" stroke-width="0.8"/>
+            <text x="162" y="47" text-anchor="middle" font-family="Arial Black" font-size="7" fill="#1D9E75" letter-spacing="1">COLD CHAIN VAN</text>
+            <text x="162" y="58" text-anchor="middle" font-family="Arial" font-size="6" fill="#1A5040">-18°C TO +25°C · 6 WHEELS</text>
+            <text x="102" y="36" font-size="13" fill="#1D9E75" opacity="0.3">❄</text>
+            <text x="218" y="36" font-size="13" fill="#1D9E75" opacity="0.3">❄</text>
+            <path d="M12,32 Q16,16 60,16 L76,16 L76,76 L12,76 Z" fill="#0F6E56"/>
+            <path d="M14,33 Q18,19 58,19 L74,19 L74,50 L14,50 Z" fill="#0A1825" opacity="0.9"/>
+            <rect x="14" y="58" width="42" height="14" rx="2" fill="#0A1825" opacity="0.5"/>
+            <rect x="8" y="34" width="7" height="20" rx="1" fill="#88CCFF" opacity="0.55"/>
+            <g class="w-spin" style="transform-origin:34px 83px"><circle cx="34" cy="83" r="14" fill="#111" stroke="#3A3A3A" stroke-width="1.5"/><circle cx="34" cy="83" r="8" fill="#0A2A20" stroke="#1D9E75" stroke-width="1.8"/><circle cx="34" cy="83" r="3.2" fill="#1D9E75"/></g>
+            <g class="w-spin" style="transform-origin:174px 83px"><circle cx="174" cy="83" r="14" fill="#111" stroke="#3A3A3A" stroke-width="1.5"/><circle cx="174" cy="83" r="8" fill="#0A2A20" stroke="#1D9E75" stroke-width="1.8"/><circle cx="174" cy="83" r="3.2" fill="#1D9E75"/></g>
+            <g class="w-spin" style="transform-origin:208px 83px"><circle cx="208" cy="83" r="14" fill="#111" stroke="#3A3A3A" stroke-width="1.5"/><circle cx="208" cy="83" r="8" fill="#0A2A20" stroke="#1D9E75" stroke-width="1.8"/><circle cx="208" cy="83" r="3.2" fill="#1D9E75"/></g>
+            <line x1="0" y1="95" x2="252" y2="95" stroke="#222" stroke-width="1"/>
+          </svg>
+        </div>
+        <div class="fb"><div class="fn">Refrigerated Van</div><div class="fm" style="color:#1D9E75;">Cold Chain · -18°C to +25°C · 6-Wheeler</div>
+          <div class="fs"><span class="sp">🌡️ <b>-18°C</b> capable</span><span class="sp">📐 <b>14–20 ft</b></span><span class="sp">🔩 <b>6 wheels</b></span></div>
+          <div class="fhr"></div><div class="fu">Pharma/vaccines (2-8°C), dairy, frozen foods. GDP/FSSAI compliant with temp data logger.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES - SMART FORM -->
+<section id="services">
+  <div class="si2">
+    <div class="rev">
+      <p class="slbl">Our Services</p>
+      <h2 class="sh">Click a Service to Book</h2>
+      <p class="ssub">Each service opens a tailored form — only the fields relevant to your request. Fill and send directly to our team via WhatsApp.</p>
+    </div>
+    <div class="sc-grid rev">
+      <div class="sc" id="svc-transport" onclick="sel('transport')"><div class="sci">🚛</div><div class="scn">Transportation</div><div class="scd">FTL/LTL outstation, express, intercity and pan-India freight across all vehicle types.</div><div class="sch">→ Click to book transport</div></div>
+      <div class="sc" id="svc-warehousing" onclick="sel('warehousing')"><div class="sci">🏭</div><div class="scn">Warehousing & Storage</div><div class="scd">Short/long-term storage with inventory management, pick-pack-dispatch across India.</div><div class="sch">→ Click to enquire storage</div></div>
+      <div class="sc" id="svc-coldchain" onclick="sel('coldchain')"><div class="sci">❄️</div><div class="scn">Cold Chain Logistics</div><div class="scd">Temperature-controlled transport & storage for pharma, dairy, FMCG, and perishables.</div><div class="sch">→ Click to book cold chain</div></div>
+      <div class="sc" id="svc-distribution" onclick="sel('distribution')"><div class="sci">🔗</div><div class="scn">Distribution Connect</div><div class="scd">We connect manufacturers with verified distributors across all 28 states of India.</div><div class="sch">→ Click to join network</div></div>
+      <div class="sc" id="svc-labour" onclick="sel('labour')"><div class="sci">👷</div><div class="scn">Labour & Handling</div><div class="scd">Loading, unloading, cargo securing teams on demand — available pan-India at any depot.</div><div class="sch">→ Click to request labour</div></div>
+      <div class="sc" id="svc-docs" onclick="sel('docs')"><div class="sci">📋</div><div class="scn">Documentation & Compliance</div><div class="scd">E-way bill, LR, POD, GST invoices and full freight documentation support.</div><div class="sch">→ Click to get help</div></div>
+    </div>
+    <div class="df" id="dynForm">
+      <div class="dfh">
+        <div><h3 id="fTitle">Booking Request</h3><p id="fSub">WhatsApp response in 15 min</p></div>
+        <button class="dfc" onclick="closeForm()">✕</button>
+      </div>
+      <div class="dfb" id="fBody"></div>
+    </div>
+  </div>
+</section>
+
+<!-- DISTRIBUTION -->
+<section id="dist">
+  <div class="si2">
+    <div class="rev">
+      <p class="slbl">Distribution Network</p>
+      <h2 class="sh">We Connect. You Grow.</h2>
+      <p class="ssub">TranspoGO bridges manufacturers with verified distributors — building supply chains that reach every district, every retailer, every consumer in India.</p>
+    </div>
+    <div class="dg rev">
+      <div class="dsteps">
+        <div class="ds"><div class="dnum">01</div><div class="dt"><h3>Manufacturer Onboarding</h3><p>Register your products, target markets, and distribution goals with us. We map your ideal distributor profile.</p></div></div>
+        <div class="ds"><div class="dnum">02</div><div class="dt"><h3>Distributor Matching</h3><p>We connect you with verified distributors in your target cities and states — vetted for reliability and market reach.</p></div></div>
+        <div class="ds"><div class="dnum">03</div><div class="dt"><h3>Logistics Setup</h3><p>TranspoGO handles warehousing, transportation, and last-mile delivery between manufacturer and distributor network.</p></div></div>
+        <div class="ds"><div class="dnum">04</div><div class="dt"><h3>Scale Pan-India</h3><p>Expand city by city. We help grow your distribution to cover all 28 states with our 1000+ fleet backbone.</p></div></div>
+      </div>
+      <div class="dvis">
+        <div style="font-size:10px;color:var(--mu);text-transform:uppercase;letter-spacing:2px;margin-bottom:18px;">Supply Chain Flow</div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:0;">
+          <div class="dn orn" style="width:100%;"><div class="dnt">🏭 Manufacturer / Brand</div><div class="dns">Your factory, products, brand</div></div>
+          <div class="dc"><div class="dcl"></div><div class="drl">TranspoGO Connects ▸</div></div>
+          <div class="dn orn" style="width:100%;text-align:center;"><div class="dnt" style="color:var(--or);font-size:18px;">▸ TRANSPOGO NETWORK ▸</div><div class="dns">Logistics + Distribution Intelligence</div></div>
+          <div class="dc"><div class="dcl"></div></div>
+          <div class="dnr">
+            <div class="dn" style="text-align:center;padding:9px;"><div style="font-size:17px;">🏪</div><div class="dnt" style="font-size:12px;">North India</div></div>
+            <div class="dn" style="text-align:center;padding:9px;"><div style="font-size:17px;">🏬</div><div class="dnt" style="font-size:12px;">South India</div></div>
+            <div class="dn" style="text-align:center;padding:9px;"><div style="font-size:17px;">🛒</div><div class="dnt" style="font-size:12px;">East &amp; West</div></div>
+          </div>
+          <div class="dc"><div class="dcl"></div></div>
+          <div class="dnr">
+            <div class="dn" style="padding:7px;text-align:center;"><div style="font-size:10px;color:var(--mu);">Distributor</div></div>
+            <div class="dn" style="padding:7px;text-align:center;"><div style="font-size:10px;color:var(--mu);">Wholesaler</div></div>
+            <div class="dn" style="padding:7px;text-align:center;"><div style="font-size:10px;color:var(--mu);">Retailer</div></div>
+          </div>
+        </div>
+        <div style="margin-top:18px;text-align:center;">
+          <button class="bp" style="display:inline-block;font-size:13px;padding:11px 22px;" onclick="sel('distribution')">Register as Manufacturer / Distributor</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COVERAGE -->
+<section id="cov">
+  <div class="si2">
+    <div class="rev">
+      <p class="slbl">Pan-India Coverage</p>
+      <h2 class="sh">All 28 States. 700+ Districts.</h2>
+      <p class="ssub">TranspoGO operates across all of India — not just metro cities. Active freight routes, warehouse hubs, and distribution networks from Kashmir to Kanyakumari.</p>
+    </div>
+    <div class="cg rev">
+      <div class="cc hq"><div class="ccn">📍 Bangalore</div><div class="ccs">Karnataka · Hub</div></div>
+      <div class="cc"><div class="ccn">Mumbai</div><div class="ccs">Maharashtra</div></div>
+      <div class="cc"><div class="ccn">Delhi NCR</div><div class="ccs">Delhi</div></div>
+      <div class="cc"><div class="ccn">Chennai</div><div class="ccs">Tamil Nadu</div></div>
+      <div class="cc"><div class="ccn">Hyderabad</div><div class="ccs">Telangana</div></div>
+      <div class="cc"><div class="ccn">Pune</div><div class="ccs">Maharashtra</div></div>
+      <div class="cc"><div class="ccn">Ahmedabad</div><div class="ccs">Gujarat</div></div>
+      <div class="cc"><div class="ccn">Kolkata</div><div class="ccs">West Bengal</div></div>
+      <div class="cc"><div class="ccn">Jaipur</div><div class="ccs">Rajasthan</div></div>
+      <div class="cc"><div class="ccn">Lucknow</div><div class="ccs">Uttar Pradesh</div></div>
+      <div class="cc"><div class="ccn">Kochi</div><div class="ccs">Kerala</div></div>
+      <div class="cc"><div class="ccn">Coimbatore</div><div class="ccs">Tamil Nadu</div></div>
+      <div class="cc"><div class="ccn">Mangalore</div><div class="ccs">Karnataka</div></div>
+      <div class="cc"><div class="ccn">Mysore</div><div class="ccs">Karnataka</div></div>
+      <div class="cc"><div class="ccn">Hubli-Dharwad</div><div class="ccs">Karnataka</div></div>
+      <div class="cc"><div class="ccn">Vijayawada</div><div class="ccs">Andhra Pradesh</div></div>
+      <div class="cc"><div class="ccn">Bhopal</div><div class="ccs">Madhya Pradesh</div></div>
+      <div class="cc"><div class="ccn">Indore</div><div class="ccs">Madhya Pradesh</div></div>
+      <div class="cc"><div class="ccn">Nagpur</div><div class="ccs">Maharashtra</div></div>
+      <div class="cc"><div class="ccn">Surat</div><div class="ccs">Gujarat</div></div>
+      <div class="cc"><div class="ccn">Chandigarh</div><div class="ccs">Punjab</div></div>
+      <div class="cc"><div class="ccn">Guwahati</div><div class="ccs">Assam</div></div>
+      <div class="cc"><div class="ccn">Bhubaneswar</div><div class="ccs">Odisha</div></div>
+      <div class="cc"><div class="ccn">Patna</div><div class="ccs">Bihar</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section id="why">
+  <div class="si2">
+    <div class="rev"><p class="slbl">Why TranspoGO</p><h2 class="sh">Built for India's Businesses</h2></div>
+    <div class="wg rev">
+      <div class="wlist">
+        <div class="wi"><div class="wnum">01</div><div class="wt"><h3>1000+ Fleet, All Vehicle Types</h3><p>Tata Ace to 40ft AVTR trailers — the right vehicle every time. We match load to vehicle perfectly.</p></div></div>
+        <div class="wi"><div class="wnum">02</div><div class="wt"><h3>GPS Tracking & WhatsApp Updates</h3><p>Live truck tracking. Automated WhatsApp milestones — pickup confirmed, in transit, delivered.</p></div></div>
+        <div class="wi"><div class="wnum">03</div><div class="wt"><h3>Transparent Pricing</h3><p>Instant WhatsApp quotes. GST invoices. No hidden charges — what we quote is what you pay.</p></div></div>
+        <div class="wi"><div class="wnum">04</div><div class="wt"><h3>Manufacturer–Distributor Network</h3><p>We build supply chains, not just move cargo. Connect and grow your distribution across all 28 states.</p></div></div>
+      </div>
+      <div class="tcard">
+        <div style="font-size:10px;color:var(--mu);text-transform:uppercase;letter-spacing:2px;margin-bottom:14px;">Live Shipment Example</div>
+        <div style="display:flex;flex-direction:column;gap:0;">
+          <div style="display:flex;align-items:center;gap:13px;"><div style="width:9px;height:9px;border-radius:50%;background:var(--or);flex-shrink:0;"></div><div><div style="font-size:10px;color:var(--mu);">Origin</div><div style="font-size:13px;font-weight:500;">📍 Mumbai, MH</div></div></div>
+          <div style="padding:5px 4px;"><div style="width:2px;height:32px;background:repeating-linear-gradient(180deg,var(--or) 0,var(--or) 5px,transparent 5px,transparent 10px);margin-left:3.5px;"></div></div>
+          <div style="display:flex;align-items:center;gap:13px;"><div style="width:9px;height:9px;border-radius:50%;background:#fff;flex-shrink:0;"></div><div><div style="font-size:10px;color:var(--mu);">Destination</div><div style="font-size:13px;font-weight:500;">📍 Bangalore, KA</div></div></div>
+        </div>
+        <div class="thdr" style="margin-top:14px;"><div><div class="tid">LR#TGO-2024-9921</div><div style="font-size:12px;font-weight:500;margin-top:2px;">32ft Container · 14 Ton</div></div><div class="tst">In Transit</div></div>
+        <div class="tbar"><div class="tfill" style="width:72%;"></div></div>
+        <div class="tpts"><span class="tp2 d">Picked Up</span><span class="tp2 d">Pune ✓</span><span class="tp2" style="color:var(--or);">Kolhapur →</span><span class="tp2">Bangalore</span></div>
+        <div class="tdet">
+          <div class="tdi"><div class="tdl">Driver</div><div class="tdv">Suresh M.</div></div>
+          <div class="tdi"><div class="tdl">Vehicle</div><div class="tdv">MH-04-BC-5566</div></div>
+          <div class="tdi"><div class="tdl">ETA</div><div class="tdv" style="color:#22C55E;">Tomorrow, 8 AM</div></div>
+          <div class="tdi"><div class="tdl">Cargo</div><div class="tdv">FMCG · 14T</div></div>
+        </div>
+        <div style="margin-top:14px;text-align:center;">
+          <button class="wa-btn" style="margin:0 auto;padding:12px 26px;font-size:14px;" onclick="goBook()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+            BOOK NOW VIA WHATSAPP
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="fin">
+    <div class="fgrd">
+      <div>
+        <div class="flogo"><img id="footlogo" alt="TranspoGO"/></div>
+        <p class="fdesc">India's enterprise logistics platform — transportation, warehousing, cold chain, and manufacturer-distributor connections across all 28 states.</p>
+        <div class="fcon">
+          <a href="tel:+919482217205">📞 +91 94822 17205</a>
+          <a href="https://wa.me/919482217205">💬 WhatsApp Us</a>
+          <a href="#">📍 Pan-India Operations</a>
+        </div>
+      </div>
+      <div>
+        <div class="fhd">Services</div>
+        <div class="fls">
+          <a href="#services" onclick="sel('transport')">Transportation</a>
+          <a href="#services" onclick="sel('warehousing')">Warehousing</a>
+          <a href="#services" onclick="sel('coldchain')">Cold Chain</a>
+          <a href="#services" onclick="sel('distribution')">Distribution Connect</a>
+          <a href="#services" onclick="sel('labour')">Labour & Handling</a>
+        </div>
+      </div>
+      <div>
+        <div class="fhd">Fleet</div>
+        <div class="fls">
+          <a href="#fleet">Tata Ace / Jeeto</a>
+          <a href="#fleet">Tata 407 / 14ft LCV</a>
+          <a href="#fleet">Eicher 17ft / 19ft</a>
+          <a href="#fleet">Tata Signa 22–24ft</a>
+          <a href="#fleet">32ft / 40ft Containers</a>
+          <a href="#fleet">Refrigerated Vans</a>
+        </div>
+      </div>
+      <div>
+        <div class="fhd">Company</div>
+        <div class="fls">
+          <a href="#why">Why TranspoGO</a>
+          <a href="#cov">Pan-India Coverage</a>
+          <a href="#dist">Distribution Network</a>
+          <a href="tel:+919482217205">Contact Us</a>
+        </div>
+      </div>
+    </div>
+    <div class="fbot">
+      <div class="fcpy">© 2024 TranspoGO. All rights reserved. Pan-India Logistics.</div>
+      <div class="fpow">Powered by <span>TranspoGO ▸</span></div>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast">✅ Opening WhatsApp with your request...</div>
+
+<script>
+// Logo
+(function(){
+  var b64='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';
+  var src='data:image/png;base64,'+b64;
+  document.getElementById('navlogo').src=src;
+  document.getElementById('footlogo').src=src;
+})();
+
+// Slideshow
+var cur=0,timer;
+var slides=document.querySelectorAll('.slide');
+var dots=document.querySelectorAll('.dot');
+function goSlide(n){
+  slides[cur].classList.remove('active');dots[cur].classList.remove('active');
+  cur=n;slides[cur].classList.add('active');dots[cur].classList.add('active');
+  clearInterval(timer);timer=setInterval(function(){goSlide((cur+1)%slides.length);},5000);
+}
+timer=setInterval(function(){goSlide((cur+1)%slides.length);},5000);
+
+function goBook(){document.getElementById('services').scrollIntoView({behavior:'smooth'});}
+
+// Close mobile nav on link click
+document.querySelectorAll('.nav-links a').forEach(function(a){a.addEventListener('click',function(){document.getElementById('navLinks').classList.remove('open');});});
+
+// Service form selector
+var WA='919482217205';
+function gv(id){var el=document.getElementById(id);return el?el.value.trim():'';}
+function gcb(){return[].slice.call(document.querySelectorAll('.dfb .cbi input:checked')).map(function(c){return c.value;}).join(', ')||'None';}
+var waIco='<svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>';
+
+var forms={
+  transport:{t:'🚛 Transportation Booking',s:'FTL / LTL / Express / Outstation · Response in 15 min',
+    h:'<div class="fsec">Contact Details</div><div class="gr2"><div class="fg2"><label>Company Name <span class="req">*</span></label><input id="f_co" placeholder="ABC Pvt Ltd"/></div><div class="fg2"><label>Contact Person <span class="req">*</span></label><input id="f_cp" placeholder="Ramesh Kumar"/></div><div class="fg2"><label>Mobile <span class="req">*</span></label><input id="f_mob" type="tel" placeholder="9876543210"/></div><div class="fg2"><label>Email</label><input id="f_em" type="email" placeholder="abc@gmail.com"/></div></div><div class="fsec">Shipment</div><div class="gr2"><div class="fg2"><label>Service <span class="req">*</span></label><select id="f_sv"><option value="">-- Select --</option><option>FTL – Full Truck Load</option><option>LTL – Part Load</option><option>Express / Same Day</option><option>Outstation / Inter-city</option><option>Local City Delivery</option></select></div><div class="fg2"><label>Vehicle Required <span class="req">*</span></label><select id="f_vh"><option value="">-- Select --</option><option>Tata Ace (7-8ft · 750 kg · 4W)</option><option>Mahindra Jeeto (6-7ft · 600 kg · 4W)</option><option>Ashok Leyland Dost (8ft · 1.5T)</option><option>Tata 407 / 14ft (2.5-3T · 4W)</option><option>Eicher Pro 17ft (6-7T · 6W)</option><option>Tata 1109 / 19ft (7-9T · 6W)</option><option>Tata Signa 22-24ft (14-16T · 10W)</option><option>Tata 3118 / 32ft SXL (7-14T)</option><option>BharatBenz 3528 / 32ft (20-25T)</option><option>Ashok Leyland AVTR / 40ft (25-35T)</option></select></div><div class="fg2"><label>Pickup City <span class="req">*</span></label><input id="f_pc" placeholder="Mumbai"/></div><div class="fg2"><label>Pickup State</label><input id="f_ps" placeholder="Maharashtra"/></div><div class="fg2"><label>Delivery City <span class="req">*</span></label><input id="f_dc" placeholder="Bangalore"/></div><div class="fg2"><label>Delivery State</label><input id="f_ds" placeholder="Karnataka"/></div><div class="fg2"><label>Product / Cargo <span class="req">*</span></label><input id="f_pr" placeholder="FMCG, Pharma, Electronics..."/></div><div class="fg2"><label>Weight (Approx)</label><input id="f_wt" placeholder="8 Tons / 500 KG"/></div><div class="fg2"><label>Pickup Date</label><input id="f_dt" type="date"/></div><div class="fg2"><label>Time Preference</label><select id="f_tm"><option value="">Any time</option><option>Morning (6AM-12PM)</option><option>Afternoon (12PM-6PM)</option><option>Evening/Night (6PM-12AM)</option></select></div></div><div class="fsec">Add-ons</div><div class="fg2"><label>Special Requirements</label><div class="cbg"><label class="cbi"><input type="checkbox" value="Loading Labour"/><span>Loading Labour</span></label><label class="cbi"><input type="checkbox" value="Unloading Labour"/><span>Unloading Labour</span></label><label class="cbi"><input type="checkbox" value="GPS Tracking"/><span>GPS Tracking</span></label><label class="cbi"><input type="checkbox" value="E-Way Bill Help"/><span>E-Way Bill</span></label><label class="cbi"><input type="checkbox" value="Goods Insurance"/><span>Goods Insurance</span></label><label class="cbi"><input type="checkbox" value="Night Pickup"/><span>Night Pickup</span></label><label class="cbi"><input type="checkbox" value="Fragile Goods"/><span>Fragile Goods</span></label></div></div><div class="fg2"><label>Notes</label><textarea id="f_nt" placeholder="Any additional requirements..."></textarea></div>'},
+  warehousing:{t:'🏭 Warehousing & Storage Enquiry',s:'Short / Long-term storage · Pick-Pack-Dispatch',
+    h:'<div class="fsec">Contact Details</div><div class="gr2"><div class="fg2"><label>Company Name <span class="req">*</span></label><input id="f_co" placeholder="ABC Pvt Ltd"/></div><div class="fg2"><label>Contact Person <span class="req">*</span></label><input id="f_cp" placeholder="Ramesh Kumar"/></div><div class="fg2"><label>Mobile <span class="req">*</span></label><input id="f_mob" type="tel" placeholder="9876543210"/></div><div class="fg2"><label>Email</label><input id="f_em" type="email" placeholder="abc@gmail.com"/></div></div><div class="fsec">Storage Requirements</div><div class="gr2"><div class="fg2"><label>City Required <span class="req">*</span></label><input id="f_cy" placeholder="Bangalore"/></div><div class="fg2"><label>State <span class="req">*</span></label><input id="f_st" placeholder="Karnataka"/></div><div class="fg2 ff"><label>Full Address / Area Preference</label><input id="f_ad" placeholder="Peenya Industrial Area, Bangalore or preferred zone"/></div><div class="fg2"><label>Space Required (sq ft) <span class="req">*</span></label><input id="f_sp" placeholder="5000 sq ft / 500 sq m"/></div><div class="fg2"><label>Duration <span class="req">*</span></label><select id="f_du"><option value="">-- Select --</option><option>Less than 1 Month</option><option>1–3 Months</option><option>3–6 Months</option><option>6–12 Months</option><option>1 Year+</option></select></div><div class="fg2"><label>Start Date <span class="req">*</span></label><input id="f_sd" type="date"/></div><div class="fg2"><label>Product Type <span class="req">*</span></label><input id="f_pr" placeholder="FMCG, Electronics, Pharma, Apparel..."/></div><div class="fg2"><label>Volume / Weight</label><input id="f_vl" placeholder="50 pallets / 20 tons"/></div><div class="fg2"><label>Expected Monthly Budget</label><select id="f_bu"><option value="">-- Select --</option><option>Under ₹25,000/month</option><option>₹25,000–₹50,000/month</option><option>₹50,000–₹1,00,000/month</option><option>₹1L–₹2.5L/month</option><option>₹2.5L+/month</option><option>Need Quotation</option></select></div><div class="fg2"><label>Temperature</label><select id="f_tp"><option>Ambient (Room Temp)</option><option>Cool (+8°C to +15°C)</option><option>Cold (0°C to +8°C)</option><option>Frozen (-18°C or below)</option></select></div></div><div class="fg2"><label>Additional Services</label><div class="cbg"><label class="cbi"><input type="checkbox" value="Pick & Pack"/><span>Pick & Pack</span></label><label class="cbi"><input type="checkbox" value="Inventory Management"/><span>Inventory Mgmt</span></label><label class="cbi"><input type="checkbox" value="Cross Docking"/><span>Cross Docking</span></label><label class="cbi"><input type="checkbox" value="Last-Mile Delivery"/><span>Last-Mile Delivery</span></label><label class="cbi"><input type="checkbox" value="Loading/Unloading Labour"/><span>Loading/Unloading</span></label><label class="cbi"><input type="checkbox" value="24x7 Security"/><span>24/7 Security</span></label></div></div><div class="fg2"><label>Notes</label><textarea id="f_nt" placeholder="Racking needs, inbound/outbound frequency, special requirements..."></textarea></div>'},
+  coldchain:{t:'❄️ Cold Chain Logistics Request',s:'Temp-controlled transport & storage · GDP/FSSAI compliant',
+    h:'<div class="fsec">Contact</div><div class="gr2"><div class="fg2"><label>Company <span class="req">*</span></label><input id="f_co" placeholder="Pharma Co Pvt Ltd"/></div><div class="fg2"><label>Contact Person <span class="req">*</span></label><input id="f_cp" placeholder="Dr. Anil Kumar"/></div><div class="fg2"><label>Mobile <span class="req">*</span></label><input id="f_mob" type="tel" placeholder="9876543210"/></div><div class="fg2"><label>Email</label><input id="f_em" type="email" placeholder="anil@pharma.com"/></div></div><div class="fsec">Cold Chain Details</div><div class="gr2"><div class="fg2"><label>Service Type <span class="req">*</span></label><select id="f_sv"><option value="">-- Select --</option><option>Refrigerated Transport</option><option>Cold Storage / Warehousing</option><option>Both Transport + Storage</option></select></div><div class="fg2"><label>Temperature Required <span class="req">*</span></label><select id="f_tp"><option value="">-- Select --</option><option>Frozen: -18°C to -22°C</option><option>Cold: 2°C to 8°C (Pharma)</option><option>Cool: 8°C to 15°C</option><option>Ambient: 15°C to 25°C</option></select></div><div class="fg2"><label>Pickup City <span class="req">*</span></label><input id="f_pc" placeholder="Hyderabad"/></div><div class="fg2"><label>Pickup State</label><input id="f_ps" placeholder="Telangana"/></div><div class="fg2"><label>Delivery City <span class="req">*</span></label><input id="f_dc" placeholder="Chennai"/></div><div class="fg2"><label>Delivery State</label><input id="f_ds" placeholder="Tamil Nadu"/></div><div class="fg2"><label>Product Type <span class="req">*</span></label><select id="f_pr"><option value="">-- Select --</option><option>Pharmaceuticals / Vaccines</option><option>Dairy / Milk Products</option><option>Frozen Foods</option><option>Fresh Fruits & Vegetables</option><option>Seafood / Meat</option><option>Temperature-Sensitive Chemicals</option><option>Other</option></select></div><div class="fg2"><label>Weight / Volume</label><input id="f_wt" placeholder="500 kg / 5 pallets"/></div><div class="fg2"><label>Pickup Date</label><input id="f_dt" type="date"/></div><div class="fg2"><label>Compliance Required</label><select id="f_cm"><option>Standard Cold Chain</option><option>GDP Compliance</option><option>FSSAI Compliance</option><option>Both GDP + FSSAI</option></select></div></div><div class="fg2"><label>Notes / Special Requirements</label><textarea id="f_nt" placeholder="Data logger, humidity control, packaging specs, SOPs..."></textarea></div>'},
+  distribution:{t:'🔗 Distribution Network Registration',s:'Manufacturer–Distributor Connect · Building India\'s supply chains',
+    h:'<div class="fsec">Your Details</div><div class="gr2"><div class="fg2"><label>Company Name <span class="req">*</span></label><input id="f_co" placeholder="XYZ Manufacturing Pvt Ltd"/></div><div class="fg2"><label>Contact Person <span class="req">*</span></label><input id="f_cp" placeholder="Suresh Rao"/></div><div class="fg2"><label>Mobile <span class="req">*</span></label><input id="f_mob" type="tel" placeholder="9876543210"/></div><div class="fg2"><label>Email <span class="req">*</span></label><input id="f_em" type="email" placeholder="suresh@xyz.com"/></div><div class="fg2"><label>City <span class="req">*</span></label><input id="f_cy" placeholder="Bangalore"/></div><div class="fg2"><label>State <span class="req">*</span></label><input id="f_st" placeholder="Karnataka"/></div></div><div class="fsec">Business Details</div><div class="gr2"><div class="fg2 ff"><label>I am a <span class="req">*</span></label><select id="f_bt"><option value="">-- Select --</option><option>Manufacturer – looking for distributors</option><option>Distributor – looking for manufacturers/brands</option><option>Brand/Importer – looking for distribution partner</option><option>Wholesaler – looking for supply chain support</option></select></div><div class="fg2"><label>Industry / Category <span class="req">*</span></label><select id="f_in"><option value="">-- Select --</option><option>FMCG / Consumer Goods</option><option>Pharmaceuticals</option><option>Electronics / Appliances</option><option>Textiles / Apparel</option><option>Food & Beverages</option><option>Chemicals / Industrial</option><option>Agri / Agro Products</option><option>Building Materials</option><option>Other</option></select></div><div class="fg2"><label>Annual Turnover</label><select id="f_tv"><option value="">-- Select --</option><option>Under ₹50 Lakhs</option><option>₹50L–₹1 Crore</option><option>₹1Cr–₹5Cr</option><option>₹5Cr–₹25Cr</option><option>₹25Cr+</option></select></div><div class="fg2"><label>Target States <span class="req">*</span></label><input id="f_ts" placeholder="Karnataka, Tamil Nadu, Maharashtra..."/></div><div class="fg2 ff"><label>Products / Brands</label><textarea id="f_pr" style="min-height:56px" placeholder="Key products or brands you manufacture or distribute..."></textarea></div><div class="fg2 ff"><label>Current Distribution Network</label><textarea id="f_nt" style="min-height:56px" placeholder="Current reach, number of dealers/retailers, states covered..."></textarea></div></div><div class="fg2"><label>What do you need from TranspoGO?</label><div class="cbg"><label class="cbi"><input type="checkbox" value="Find Distributors"/><span>Find Distributors</span></label><label class="cbi"><input type="checkbox" value="Find Manufacturers"/><span>Find Manufacturers</span></label><label class="cbi"><input type="checkbox" value="Logistics Support"/><span>Logistics Support</span></label><label class="cbi"><input type="checkbox" value="Warehousing in New Cities"/><span>Warehousing</span></label><label class="cbi"><input type="checkbox" value="Pan-India Scale-up"/><span>Pan-India Scale-up</span></label></div></div>'},
+  labour:{t:'👷 Labour & Handling Request',s:'Loading, unloading & cargo handling teams on demand',
+    h:'<div class="fsec">Contact</div><div class="gr2"><div class="fg2"><label>Company <span class="req">*</span></label><input id="f_co" placeholder="ABC Pvt Ltd"/></div><div class="fg2"><label>Contact Person <span class="req">*</span></label><input id="f_cp" placeholder="Ramesh Kumar"/></div><div class="fg2"><label>Mobile <span class="req">*</span></label><input id="f_mob" type="tel" placeholder="9876543210"/></div><div class="fg2"><label>Email</label><input id="f_em" type="email" placeholder="abc@gmail.com"/></div></div><div class="fsec">Labour Requirements</div><div class="gr2"><div class="fg2"><label>City <span class="req">*</span></label><input id="f_cy" placeholder="Bangalore"/></div><div class="fg2"><label>State</label><input id="f_st" placeholder="Karnataka"/></div><div class="fg2 ff"><label>Location / Address <span class="req">*</span></label><input id="f_ad" placeholder="Factory address, warehouse, pickup point..."/></div><div class="fg2"><label>Labour Type <span class="req">*</span></label><select id="f_lt"><option value="">-- Select --</option><option>Loading Labour</option><option>Unloading Labour</option><option>Both Loading & Unloading</option><option>Warehouse Labour</option><option>Cargo Securing / Strapping</option><option>Fragile Goods Handling</option></select></div><div class="fg2"><label>Workers Needed</label><input id="f_wk" placeholder="4 workers / 10 workers"/></div><div class="fg2"><label>Date Required <span class="req">*</span></label><input id="f_dt" type="date"/></div><div class="fg2"><label>Duration</label><select id="f_du"><option>Half Day (4 hrs)</option><option>Full Day (8 hrs)</option><option>Multiple Days</option><option>Ongoing Contract</option></select></div><div class="fg2"><label>Cargo Type</label><input id="f_pr" placeholder="FMCG, Machinery, Fragile goods..."/></div></div><div class="fg2"><label>Notes</label><textarea id="f_nt" placeholder="Safety requirements, PPE, machinery needed..."></textarea></div>'},
+  docs:{t:'📋 Documentation & Compliance Request',s:'E-Way Bill, LR, POD, GST Invoices · Digital records',
+    h:'<div class="fsec">Contact</div><div class="gr2"><div class="fg2"><label>Company <span class="req">*</span></label><input id="f_co" placeholder="ABC Pvt Ltd"/></div><div class="fg2"><label>Contact Person <span class="req">*</span></label><input id="f_cp" placeholder="Accounts Manager"/></div><div class="fg2"><label>Mobile <span class="req">*</span></label><input id="f_mob" type="tel" placeholder="9876543210"/></div><div class="fg2"><label>Email <span class="req">*</span></label><input id="f_em" type="email" placeholder="accounts@abc.com"/></div><div class="fg2"><label>GST Number</label><input id="f_gst" placeholder="29ABCDE1234F1Z5"/></div><div class="fg2"><label>State of Registration</label><input id="f_st" placeholder="Karnataka"/></div></div><div class="fg2"><label>Services Required <span class="req">*</span></label><div class="cbg"><label class="cbi"><input type="checkbox" value="E-Way Bill"/><span>E-Way Bill Generation</span></label><label class="cbi"><input type="checkbox" value="Lorry Receipt (LR)"/><span>Lorry Receipt (LR)</span></label><label class="cbi"><input type="checkbox" value="Proof of Delivery (POD)"/><span>POD</span></label><label class="cbi"><input type="checkbox" value="GST Invoice"/><span>GST Invoice</span></label><label class="cbi"><input type="checkbox" value="Monthly MIS"/><span>Monthly MIS</span></label><label class="cbi"><input type="checkbox" value="Freight Reconciliation"/><span>Freight Reconciliation</span></label></div></div><div class="fg2"><label>Shipments/Month</label><input id="f_vl" placeholder="50 shipments/month"/></div><div class="fg2"><label>Issue / Requirement</label><textarea id="f_nt" placeholder="Describe what documentation support you need..."></textarea></div>'}
+};
+
+function sel(type){
+  document.querySelectorAll('.sc').forEach(function(c){c.classList.remove('sel');});
+  var el=document.getElementById('svc-'+type);if(el)el.classList.add('sel');
+  var f=forms[type];if(!f)return;
+  document.getElementById('fTitle').textContent=f.t;
+  document.getElementById('fSub').textContent=f.s;
+  var body=document.getElementById('fBody');
+  body.innerHTML=f.h+'<button class="wa-btn" onclick="sendWA(\''+type+'\')">'+waIco+' SEND REQUEST VIA WHATSAPP</button><p class="fnote">📍 Pan-India · Response in 15 min · <a href="tel:+919482217205">+91 94822 17205</a></p>';
+  var df=document.getElementById('dynForm');
+  df.classList.add('show');
+  setTimeout(function(){df.scrollIntoView({behavior:'smooth',block:'start'});},80);
+}
+function closeForm(){
+  document.getElementById('dynForm').classList.remove('show');
+  document.querySelectorAll('.sc').forEach(function(c){c.classList.remove('sel');});
+}
+
+function sendWA(type){
+  var co=gv('f_co'),cp=gv('f_cp'),mob=gv('f_mob');
+  if(!co||!cp||!mob){alert('Please fill Company Name, Contact Person and Mobile.');return;}
+  var em=gv('f_em'),cb=gcb(),nt=gv('f_nt');
+  var icons={transport:'🚛',warehousing:'🏭',coldchain:'❄️',distribution:'🔗',labour:'👷',docs:'📋'};
+  var names={transport:'TRANSPORTATION REQUEST',warehousing:'WAREHOUSING ENQUIRY',coldchain:'COLD CHAIN REQUEST',distribution:'DISTRIBUTION REGISTRATION',labour:'LABOUR REQUEST',docs:'DOCUMENTATION REQUEST'};
+  var m=(icons[type]||'📦')+' *NEW '+(names[type]||'ENQUIRY')+'*\n\n';
+  m+='*Company:* '+co+'\n*Contact:* '+cp+'\n*Mobile:* '+mob+(em?'\n*Email:* '+em:'')+'\n';
+  if(type==='transport'){m+='\n*Service:* '+(gv('f_sv')||'—')+'\n*Vehicle:* '+(gv('f_vh')||'—')+'\n*Pickup:* '+gv('f_pc')+(gv('f_ps')?', '+gv('f_ps'):'')+'\n*Delivery:* '+gv('f_dc')+(gv('f_ds')?', '+gv('f_ds'):'')+'\n*Product:* '+(gv('f_pr')||'—')+'\n*Weight:* '+(gv('f_wt')||'—')+(gv('f_dt')?'\n*Date:* '+gv('f_dt'):'')+'\n*Extras:* '+cb;}
+  else if(type==='warehousing'){m+='\n*City:* '+gv('f_cy')+', '+gv('f_st')+(gv('f_ad')?'\n*Address:* '+gv('f_ad'):'')+'\n*Space:* '+(gv('f_sp')||'—')+'\n*Duration:* '+(gv('f_du')||'—')+(gv('f_sd')?'\n*Start Date:* '+gv('f_sd'):'')+'\n*Product:* '+(gv('f_pr')||'—')+'\n*Volume:* '+(gv('f_vl')||'—')+'\n*Budget:* '+(gv('f_bu')||'—')+'\n*Temp:* '+(gv('f_tp')||'Ambient')+'\n*Services:* '+cb;}
+  else if(type==='coldchain'){m+='\n*Service:* '+(gv('f_sv')||'—')+'\n*Temp:* '+(gv('f_tp')||'—')+'\n*Pickup:* '+gv('f_pc')+(gv('f_ps')?', '+gv('f_ps'):'')+'\n*Delivery:* '+gv('f_dc')+(gv('f_ds')?', '+gv('f_ds'):'')+'\n*Product:* '+(gv('f_pr')||'—')+'\n*Weight:* '+(gv('f_wt')||'—')+'\n*Compliance:* '+(gv('f_cm')||'—');}
+  else if(type==='distribution'){m+='\n*City:* '+gv('f_cy')+', '+gv('f_st')+'\n*Business Type:* '+(gv('f_bt')||'—')+'\n*Industry:* '+(gv('f_in')||'—')+'\n*Turnover:* '+(gv('f_tv')||'—')+'\n*Target States:* '+(gv('f_ts')||'—')+(gv('f_pr')?'\n*Products:* '+gv('f_pr'):'')+'\n*Needs:* '+cb;}
+  else if(type==='labour'){m+='\n*City:* '+gv('f_cy')+(gv('f_st')?', '+gv('f_st'):'')+(gv('f_ad')?'\n*Location:* '+gv('f_ad'):'')+'\n*Labour Type:* '+(gv('f_lt')||'—')+'\n*Workers:* '+(gv('f_wk')||'—')+(gv('f_dt')?'\n*Date:* '+gv('f_dt'):'')+'\n*Duration:* '+(gv('f_du')||'—')+'\n*Cargo:* '+(gv('f_pr')||'—');}
+  else if(type==='docs'){m+='\n*GST:* '+(gv('f_gst')||'—')+'\n*State:* '+(gv('f_st')||'—')+'\n*Volume:* '+(gv('f_vl')||'—')+'\n*Services:* '+cb;}
+  if(nt)m+='\n\n*Notes:* '+nt;
+  m+='\n\n_Submitted via TranspoGO Website_ ✅';
+  window.open('https://wa.me/'+WA+'?text='+encodeURIComponent(m),'_blank');
+  var t=document.getElementById('toast');t.classList.add('show');setTimeout(function(){t.classList.remove('show');},3500);
+}
+
+// Scroll reveal
+var obs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting)e.target.classList.add('v');});},{threshold:0.07});
+document.querySelectorAll('.rev').forEach(function(el){obs.observe(el);});
+</script>
+</body>
+</html>
