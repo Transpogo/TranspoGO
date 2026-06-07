@@ -206,6 +206,7 @@ footer{background:#0D0D0D;border-top:1px solid var(--br);padding:44px 28px 20px;
 .rev.v{opacity:1;transform:translateY(0);}
 </style>
 </head>
+
 <body>
 
 <!-- NAV -->
@@ -827,8 +828,7 @@ function sel(type){
   document.getElementById('fTitle').textContent=f.t;
   document.getElementById('fSub').textContent=f.s;
   var body=document.getElementById('fBody');
-  body.innerHTML=f.h+'<button class="wa-btn" onclick="sendWA(\''+type+'\')">'+waIco+' SEND REQUEST VIA WHATSAPP</button><p class="fnote">📍 Pan-India · Response in 15 min · <a href="tel:+919482217205">+91 94822 17205</a></p>';
-  var df=document.getElementById('dynForm');
+body.innerHTML=f.h+'<button class="wa-btn"onclick="submitLead(\''+type+'\')">'+waIco+' SEND REQUEST VIA WHATSAPP</button><p class="fnote">📍 Pan-India · Response in 15 min · <a href="tel:+919482217205">+91 94822 17205</a></p>';  var df=document.getElementById('dynForm');
   df.classList.add('show');
   setTimeout(function(){df.scrollIntoView({behavior:'smooth',block:'start'});},80);
 }
@@ -837,29 +837,52 @@ function closeForm(){
   document.querySelectorAll('.sc').forEach(function(c){c.classList.remove('sel');});
 }
 
-function sendWA(type){
-  var co=gv('f_co'),cp=gv('f_cp'),mob=gv('f_mob');
-  if(!co||!cp||!mob){alert('Please fill Company Name, Contact Person and Mobile.');return;}
-  var em=gv('f_em'),cb=gcb(),nt=gv('f_nt');
-  var icons={transport:'🚛',warehousing:'🏭',coldchain:'❄️',distribution:'🔗',labour:'👷',docs:'📋'};
-  var names={transport:'TRANSPORTATION REQUEST',warehousing:'WAREHOUSING ENQUIRY',coldchain:'COLD CHAIN REQUEST',distribution:'DISTRIBUTION REGISTRATION',labour:'LABOUR REQUEST',docs:'DOCUMENTATION REQUEST'};
-  var m=(icons[type]||'📦')+' *NEW '+(names[type]||'ENQUIRY')+'*\n\n';
-  m+='*Company:* '+co+'\n*Contact:* '+cp+'\n*Mobile:* '+mob+(em?'\n*Email:* '+em:'')+'\n';
-  if(type==='transport'){m+='\n*Service:* '+(gv('f_sv')||'—')+'\n*Vehicle:* '+(gv('f_vh')||'—')+'\n*Pickup:* '+gv('f_pc')+(gv('f_ps')?', '+gv('f_ps'):'')+'\n*Delivery:* '+gv('f_dc')+(gv('f_ds')?', '+gv('f_ds'):'')+'\n*Product:* '+(gv('f_pr')||'—')+'\n*Weight:* '+(gv('f_wt')||'—')+(gv('f_dt')?'\n*Date:* '+gv('f_dt'):'')+'\n*Extras:* '+cb;}
-  else if(type==='warehousing'){m+='\n*City:* '+gv('f_cy')+', '+gv('f_st')+(gv('f_ad')?'\n*Address:* '+gv('f_ad'):'')+'\n*Space:* '+(gv('f_sp')||'—')+'\n*Duration:* '+(gv('f_du')||'—')+(gv('f_sd')?'\n*Start Date:* '+gv('f_sd'):'')+'\n*Product:* '+(gv('f_pr')||'—')+'\n*Volume:* '+(gv('f_vl')||'—')+'\n*Budget:* '+(gv('f_bu')||'—')+'\n*Temp:* '+(gv('f_tp')||'Ambient')+'\n*Services:* '+cb;}
-  else if(type==='coldchain'){m+='\n*Service:* '+(gv('f_sv')||'—')+'\n*Temp:* '+(gv('f_tp')||'—')+'\n*Pickup:* '+gv('f_pc')+(gv('f_ps')?', '+gv('f_ps'):'')+'\n*Delivery:* '+gv('f_dc')+(gv('f_ds')?', '+gv('f_ds'):'')+'\n*Product:* '+(gv('f_pr')||'—')+'\n*Weight:* '+(gv('f_wt')||'—')+'\n*Compliance:* '+(gv('f_cm')||'—');}
-  else if(type==='distribution'){m+='\n*City:* '+gv('f_cy')+', '+gv('f_st')+'\n*Business Type:* '+(gv('f_bt')||'—')+'\n*Industry:* '+(gv('f_in')||'—')+'\n*Turnover:* '+(gv('f_tv')||'—')+'\n*Target States:* '+(gv('f_ts')||'—')+(gv('f_pr')?'\n*Products:* '+gv('f_pr'):'')+'\n*Needs:* '+cb;}
-  else if(type==='labour'){m+='\n*City:* '+gv('f_cy')+(gv('f_st')?', '+gv('f_st'):'')+(gv('f_ad')?'\n*Location:* '+gv('f_ad'):'')+'\n*Labour Type:* '+(gv('f_lt')||'—')+'\n*Workers:* '+(gv('f_wk')||'—')+(gv('f_dt')?'\n*Date:* '+gv('f_dt'):'')+'\n*Duration:* '+(gv('f_du')||'—')+'\n*Cargo:* '+(gv('f_pr')||'—');}
-  else if(type==='docs'){m+='\n*GST:* '+(gv('f_gst')||'—')+'\n*State:* '+(gv('f_st')||'—')+'\n*Volume:* '+(gv('f_vl')||'—')+'\n*Services:* '+cb;}
-  if(nt)m+='\n\n*Notes:* '+nt;
-  m+='\n\n_Submitted via TranspoGO Website_ ✅';
-  window.open('https://wa.me/'+WA+'?text='+encodeURIComponent(m),'_blank');
-  var t=document.getElementById('toast');t.classList.add('show');setTimeout(function(){t.classList.remove('show');},3500);
+async function submitLead(type){
+
+  const leadData = {
+    company: gv('f_co'),
+    contact_person: gv('f_cp'),
+    mobile: gv('f_mob'),
+    email: gv('f_em'),
+    service_type: type
+  };
+
+  try {
+
+    const { error } = await supabaseClient
+      .from('leads')
+      .insert([leadData]);
+
+    if(error){
+      console.error(error);
+      alert('Failed to save lead');
+      return;
+    }
+
+    sendWA(type);
+
+  } catch(err){
+    console.error(err);
+    alert('Unexpected error');
+  }
 }
 
 // Scroll reveal
 var obs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting)e.target.classList.add('v');});},{threshold:0.07});
 document.querySelectorAll('.rev').forEach(function(el){obs.observe(el);});
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+const { createClient } = supabase;
+
+const supabaseClient = createClient(
+  "https://zxdrdrqkltwpsxfztkhu.supabase.co",
+  "sb_publishable_PXLWCM-KxG6cDLsDfrO4_w_-X12cMOn"
+);
+</script>
+
+
 </body>
 </html>
